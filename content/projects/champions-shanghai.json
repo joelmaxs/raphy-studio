@@ -1,0 +1,202 @@
+{
+  "slug": "champions-shanghai",
+  "title": "CHAMPIONS SHANGHAI - Opening Tease",
+  "category": "commercial",
+  "order": 2,
+  "link": "page",
+  "externalUrl": "",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-shanghai.webp",
+    "video": "/assets/video/videos-projects/video-shanghai.mp4",
+    "coverPosition": "10%"
+  },
+  "home": {
+    "show": true,
+    "title": "Champions\nShanghai",
+    "lead": "We partnered with Good Boy Creative on the creation of the Champions Shanghai Opening Tease.",
+    "paragraphs": [
+      "Our team had the opportunity to help develop the stylized visual direction throughout the animation.",
+      "We worked across different stages of the production, from character texturing to 3D animation, mattepainting, and 2DFX animation."
+    ],
+    "cover": "/assets/images/images-home/champions_capa.webp",
+    "coverPosition": "35%",
+    "order": 3
+  },
+  "seoDescription": "Champions Shanghai Opening Tease — a stylized animation by Raphy Studios in partnership with Good Boy Creative.",
+  "legacyId": "champions",
+  "page": {
+    "theme": "white",
+    "logo": "black",
+    "menuIcon": "dark",
+    "heading": {
+      "title": "Champions\n shanghai",
+      "number": "02"
+    },
+    "hero": {
+      "show": false
+    },
+    "video": {
+      "youtubeId": "3q9ztkkuHYc",
+      "youtubeShortsId": "J7A6_gJJrvk"
+    },
+    "description": {
+      "header": "/ DESCRIPTION",
+      "text": "We were challenged to develop a short cinematic of up to 20 seconds, and the Rush\n concept fit perfectly. We chose Jett as the protagonist, racing to save the game.",
+      "column1": "<b>A film by Igor Rafael\n Written by Thiago Samuel</b>",
+      "column2Title": "<b>This project began in late 2023.</b>",
+      "column2Text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+      "column3": "<b>An original short film series\n in development.</b>",
+      "column4": "<b>Scheduled for release in\n the second half of 2026.</b>"
+    },
+    "gallery": [
+      "/assets/images/images-champions/gallery/img1.webp",
+      "/assets/images/images-champions/gallery/img2.webp",
+      "/assets/images/images-champions/gallery/img3.webp",
+      "/assets/images/images-champions/gallery/img4.webp",
+      "/assets/images/images-champions/gallery/img5.webp",
+      "/assets/images/images-champions/gallery/img6.webp",
+      "/assets/images/images-champions/gallery/img7.webp",
+      "/assets/images/images-champions/gallery/img8.webp",
+      "/assets/images/images-champions/gallery/img9.webp",
+      "/assets/images/images-champions/gallery/img10.webp",
+      "/assets/images/images-champions/gallery/img11.webp",
+      "/assets/images/images-champions/gallery/img12.webp"
+    ],
+    "modelsheet": {
+      "title": "/ backgrounds",
+      "text": "A promising young martial artist training alongside his father in their home dojo, sees his life turned\n upside down after an unexpected attack sets him on an unimaginable path, sees his life turned upside\n down after an unexpected attack sets him on an unimaginable path.",
+      "images": [
+        "/assets/images/images-champions/slider1/img1.webp",
+        "/assets/images/images-champions/slider1/img2.webp",
+        "/assets/images/images-champions/slider1/img3.webp",
+        "/assets/images/images-champions/slider1/img4.webp",
+        "/assets/images/images-champions/slider1/img5.webp",
+        "/assets/images/images-champions/slider1/img6.webp",
+        "/assets/images/images-champions/slider1/img7.webp"
+      ]
+    },
+    "backgrounds": {
+      "title": "",
+      "text": "",
+      "images": []
+    },
+    "process": [],
+    "concept": {
+      "header": "/ characters",
+      "text1": "The project's first explorations were created to depict Haruto's dojo, Kenji's\n grandfather. It's an environment surrounded by mountains that will play an\n important role and be explored much further in <b>Part 2</b> of the project.",
+      "text2": "Alongside that, we also created several color studies to define the mood of\n the opening scenes. This particular piece holds a special place for our team.\n It's one of <b>our favorite explorations</b> and perfectly captures the atmosphere\n we wanted to achieve.",
+      "image1": "/assets/images/images-champions/concept/img1.webp",
+      "image1Label": "",
+      "image1Credit": "",
+      "image2": "/assets/images/images-champions/concept/img2.webp",
+      "image2Label": "",
+      "image2Credit": ""
+    },
+    "fullImage1": "/assets/images/images-champions/img-full1.webp",
+    "fullImage2": "/assets/images/images-champions/img-full2.webp",
+    "animation2d": {
+      "header": "/ 2D ANIMATION",
+      "text": "A promising young martial artist training alongside his father in their home dojo, sees his life turned\n upside down after an unexpected attack sets him on an unimaginable path, sees his life turned upside\n down after an unexpected attack sets him on an unimaginable path.",
+      "image1": "/assets/images/images-champions/animation2d/img1.webp",
+      "image2": "/assets/images/images-champions/animation2d/img2.webp"
+    },
+    "credits": {
+      "header": "/ CREDITS",
+      "people": [
+        {
+          "name": "Igor Rafael",
+          "role": "Raphy Director"
+        },
+        {
+          "name": "/ Vinicios Moreira.",
+          "role": ""
+        },
+        {
+          "name": "/ Victor Ribeiro",
+          "role": ""
+        },
+        {
+          "name": "/ Matheus Elias",
+          "role": "Modeling artist"
+        },
+        {
+          "name": "/ Gabriel da Silva",
+          "role": ""
+        },
+        {
+          "name": "/ Wellington",
+          "role": ""
+        },
+        {
+          "name": "/ Edgard",
+          "role": ""
+        },
+        {
+          "name": "/ Andre Guerrilha",
+          "role": "Riggers"
+        },
+        {
+          "name": "/ Victor Gui.",
+          "role": ""
+        },
+        {
+          "name": "/ Pedro Sine",
+          "role": ""
+        },
+        {
+          "name": "/ Clara Guedes",
+          "role": ""
+        },
+        {
+          "name": "/ Felipe Gand",
+          "role": ""
+        },
+        {
+          "name": "/ Gabriel dos Anjos",
+          "role": ""
+        },
+        {
+          "name": "/ Isabelle",
+          "role": ""
+        },
+        {
+          "name": "/ Gui Lascasas",
+          "role": "Mattepainting Artists"
+        },
+        {
+          "name": "/ Igor R.",
+          "role": "3d Animator"
+        },
+        {
+          "name": "/ Pedro Sine",
+          "role": ""
+        },
+        {
+          "name": "/ Vladimir",
+          "role": ""
+        },
+        {
+          "name": "/ Savio Soares",
+          "role": "2d Animators"
+        },
+        {
+          "name": "/ Clara Guedes",
+          "role": "Production Coordinator"
+        }
+      ]
+    },
+    "contact": {
+      "show": true,
+      "header": "GET IN TOUCH"
+    },
+    "trailerBanner": {
+      "show": false,
+      "title": "",
+      "link": "",
+      "text1": "",
+      "text2": "",
+      "text3": ""
+    },
+    "overflowVisible": false
+  }
+}

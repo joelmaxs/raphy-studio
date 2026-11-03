@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Eurostile Extended';
+    src: url('EurostileExtended-Roman.eot');
+    src: local('Eurostile Extended'), local('EurostileExtended-Roman'),
+        url('EurostileExtended-Roman.eot?#iefix') format('embedded-opentype'),
+        url('EurostileExtended-Roman.woff2') format('woff2'),
+        url('EurostileExtended-Roman.woff') format('woff'),
+        url('EurostileExtended-Roman.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Eurostile';
+    src: url('Eurostile-Oblique.eot');
+    src: local('Eurostile-Oblique'),
+        url('Eurostile-Oblique.eot?#iefix') format('embedded-opentype'),
+        url('Eurostile-Oblique.woff2') format('woff2'),
+        url('Eurostile-Oblique.woff') format('woff'),
+        url('Eurostile-Oblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'EuroStyle';
+    src: url('EuroStyleNormal.eot');
+    src: local('EuroStyle Normal'), local('EuroStyleNormal'),
+        url('EuroStyleNormal.eot?#iefix') format('embedded-opentype'),
+        url('EuroStyleNormal.woff2') format('woff2'),
+        url('EuroStyleNormal.woff') format('woff'),
+        url('EuroStyleNormal.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Eurostile';
+    src: url('EurostileBold.eot');
+    src: local('Eurostile Bold'), local('EurostileBold'),
+        url('EurostileBold.eot?#iefix') format('embedded-opentype'),
+        url('EurostileBold.woff2') format('woff2'),
+        url('EurostileBold.woff') format('woff'),
+        url('EurostileBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+

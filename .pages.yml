@@ -1,0 +1,219 @@
+# Painel de edição — Pages CMS (https://app.pagescms.org)
+# Cada projeto é um arquivo em content/projects/. Ao salvar, a Cloudflare reconstrói o site sozinha.
+
+media:
+  input: public/assets
+  output: /assets
+  extensions: [jpg, jpeg, png, webp, gif, svg, mp4, webm]
+
+content:
+  - name: projects
+    label: Projetos
+    type: collection
+    path: content/projects
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: slug
+      fields: [title, order, link]
+      sort: order
+      order: asc
+    fields:
+      - name: slug
+        label: Endereço da página
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9-]+$"
+          message: "Só letras minúsculas, números e hífen (ex.: meu-projeto)"
+        description: "Vira o link raphystudio.com/projects/ENDEREÇO. Não mude depois de publicado."
+      - name: title
+        label: Nome do projeto
+        type: string
+        required: true
+        description: "Como aparece na grade da página Projects (ex.: RUSH - Valorant Cinematic)."
+      - name: published
+        label: Publicado
+        type: boolean
+        default: true
+      - name: order
+        label: Ordem na página Projects
+        type: number
+        description: "1 aparece primeiro."
+      - name: category
+        label: Categoria
+        type: select
+        options:
+          values: [originals, commercial]
+      - name: link
+        label: Ao clicar no projeto
+        type: select
+        options:
+          values:
+            - value: page
+              label: Abrir a página do projeto (modelo)
+            - value: external
+              label: Abrir um link externo (Behance, YouTube…)
+      - name: externalUrl
+        label: Link externo
+        type: string
+        description: "Só usado quando 'Ao clicar' = link externo."
+      - name: seoDescription
+        label: Descrição para Google / WhatsApp
+        type: text
+        description: "Opcional. 1 ou 2 frases."
+
+      - name: grid
+        label: Card na página Projects
+        type: object
+        fields:
+          - { name: cover, label: Capa (imagem), type: image }
+          - { name: video, label: Vídeo do card (mp4 curto, sem áudio), type: file, options: { categories: [video] } }
+          - { name: coverPosition, label: Enquadramento da capa, type: string, description: "center, left, right ou porcentagem (ex.: 43%)" }
+
+      - name: home
+        label: Destaque na Home
+        type: object
+        fields:
+          - { name: show, label: Mostrar na Home, type: boolean }
+          - { name: order, label: Ordem na Home, type: number }
+          - { name: title, label: Título (uma linha por linha), type: text }
+          - { name: lead, label: Frase em negrito, type: text }
+          - { name: paragraphs, label: Parágrafos, type: text, list: true }
+          - { name: cover, label: Imagem, type: image }
+          - { name: coverPosition, label: Enquadramento da imagem, type: string }
+
+      - name: page
+        label: Página do projeto (modelo)
+        type: object
+        description: "Só preencha se 'Ao clicar' = página do projeto. Seções vazias não aparecem. Use <b>texto</b> para negrito."
+        fields:
+          - name: theme
+            label: Fundo da página
+            type: select
+            options: { values: [white, black] }
+          - name: logo
+            label: Cor da logo no topo
+            type: select
+            options: { values: [black, white] }
+          - name: menuIcon
+            label: Ícone do menu
+            type: select
+            options:
+              values:
+                - { value: dark, label: Escuro (para fundo claro) }
+                - { value: light, label: Claro (para fundo escuro) }
+          - name: heading
+            label: Título da página
+            type: object
+            fields:
+              - { name: title, label: Título, type: string }
+              - { name: number, label: Número, type: string }
+          - name: hero
+            label: Capa com logo (estilo Tears of Blood)
+            type: object
+            fields:
+              - { name: show, label: Mostrar, type: boolean }
+              - { name: text, label: Texto, type: string }
+              - { name: logo, label: Logo, type: image }
+              - { name: button1Text, label: Botão 1 — texto, type: string }
+              - { name: button1Link, label: Botão 1 — link, type: string }
+              - { name: button2Text, label: Botão 2 — texto, type: string }
+              - { name: button2Link, label: Botão 2 — link, type: string }
+              - { name: button2Icon, label: Botão 2 — ícone, type: image }
+          - name: video
+            label: Vídeo do YouTube
+            type: object
+            fields:
+              - { name: youtubeId, label: ID do vídeo, type: string, description: "O código depois de v= no link (ex.: 3q9ztkkuHYc)" }
+              - { name: youtubeShortsId, label: ID da versão vertical (celular), type: string }
+          - name: description
+            label: Descrição
+            type: object
+            fields:
+              - { name: header, label: Rótulo (ex. / DESCRIPTION), type: string }
+              - { name: text, label: Texto principal, type: text }
+              - { name: column1, label: Coluna 1, type: text }
+              - { name: column2Title, label: Coluna 2 — título, type: text }
+              - { name: column2Text, label: Coluna 2 — texto, type: text }
+              - { name: column3, label: Coluna 3, type: text }
+              - { name: column4, label: Coluna 4, type: text }
+          - name: gallery
+            label: Galeria
+            type: image
+            options: { multiple: { max: 24 } }
+          - name: modelsheet
+            label: Carrossel 1 (modelsheet)
+            type: object
+            fields:
+              - { name: title, label: Rótulo, type: string }
+              - { name: text, label: Texto, type: text }
+              - { name: images, label: Imagens, type: image, options: { multiple: { max: 20 } } }
+          - name: concept
+            label: Concept
+            type: object
+            fields:
+              - { name: header, label: Rótulo, type: string }
+              - { name: text1, label: Texto 1, type: text }
+              - { name: text2, label: Texto 2, type: text }
+              - { name: image1, label: Imagem 1, type: image }
+              - { name: image1Label, label: Imagem 1 — legenda, type: string }
+              - { name: image1Credit, label: Imagem 1 — crédito, type: string }
+              - { name: image2, label: Imagem 2, type: image }
+              - { name: image2Label, label: Imagem 2 — legenda, type: string }
+              - { name: image2Credit, label: Imagem 2 — crédito, type: string }
+          - { name: fullImage1, label: Imagem de tela cheia 1, type: image }
+          - name: process
+            label: Processo (imagens que trocam ao rolar)
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Título, type: string }
+              - { name: text, label: Texto, type: text }
+              - { name: image, label: Imagem, type: image }
+          - name: backgrounds
+            label: Carrossel 2 (backgrounds)
+            type: object
+            fields:
+              - { name: title, label: Rótulo, type: string }
+              - { name: text, label: Texto, type: text }
+              - { name: images, label: Imagens, type: image, options: { multiple: { max: 20 } } }
+          - name: animation2d
+            label: Animação 2D (duas imagens)
+            type: object
+            fields:
+              - { name: header, label: Rótulo, type: string }
+              - { name: text, label: Texto, type: text }
+              - { name: image1, label: Imagem 1, type: image }
+              - { name: image2, label: Imagem 2, type: image }
+          - { name: fullImage2, label: Imagem de tela cheia 2, type: image }
+          - name: credits
+            label: Créditos
+            type: object
+            fields:
+              - { name: header, label: Rótulo, type: string }
+              - name: people
+                label: Pessoas
+                type: object
+                list: true
+                fields:
+                  - { name: name, label: Nome, type: string }
+                  - { name: role, label: Função, type: string }
+          - name: contact
+            label: Bloco "Let's Talk"
+            type: object
+            fields:
+              - { name: show, label: Mostrar, type: boolean }
+              - { name: header, label: Rótulo, type: string }
+          - name: trailerBanner
+            label: Banner de trailer (estilo Tears of Blood)
+            type: object
+            fields:
+              - { name: show, label: Mostrar, type: boolean }
+              - { name: title, label: Título, type: text }
+              - { name: link, label: Link do trailer, type: string }
+              - { name: text1, label: Texto 1, type: text }
+              - { name: text2, label: Texto 2, type: text }
+              - { name: text3, label: Texto 3 (negrito), type: text }
+          - { name: overflowVisible, label: "Avançado: overflow visível", type: boolean, hidden: true }
+      - { name: legacyId, type: string, hidden: true }

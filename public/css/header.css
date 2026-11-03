@@ -1,0 +1,231 @@
+#header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background: transparent;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
+    text-decoration: none;
+    text-align: right;
+    color: var(--white);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.menu {
+    position: fixed;
+    width: 100%;
+    height: 64vh;
+    top: 0;
+    right: 0;
+    background: var(--gray2);
+    z-index: 1000;
+    transform-origin: top right;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 15px 15px 5px 8px;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.menu-content-left {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#text-icon {
+    transition: letter-spacing 300ms cubic-bezier(.96, 0, .16, 1);
+}
+
+.menu-toggle:hover #text-icon {
+    letter-spacing: 0.34em;
+}
+
+.close-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: right;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--black);
+    cursor: pointer;
+    text-wrap: nowrap;
+}
+
+#text-icon-close {
+    margin-top: 0;
+    transition: letter-spacing 300ms cubic-bezier(.96, 0, .16, 1);
+}
+
+.close-menu:hover #text-icon-close {
+    letter-spacing: 0.34em;
+}
+
+.menu.active {
+    pointer-events: all;
+    animation: slideIn 0.7s cubic-bezier(0, .73, .02, .99) forwards;
+}
+
+.menu.close {
+    animation: slideOut 0.7s cubic-bezier(0, .73, .02, .99) forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%) translateX(40%) rotate(22deg);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(0) translateX(0) rotate(-3deg);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0) translateX(0) rotate(-3deg);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-100%) translateX(40%) rotate(15deg);
+        opacity: 1;
+    }
+}
+
+#lista-menu {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+}
+
+.item-menu {
+    text-wrap: nowrap;
+    font-weight: 500;
+    font-size: 13vw;
+    line-height: 80%;
+    text-transform: uppercase;
+    color: var(--black2);
+    text-decoration: none;
+    transition: all 0.1s cubic-bezier(1, -0.01, .02, .99);
+}
+
+.item-menu.active {
+    color: var(--gray4);
+    cursor: default;
+    pointer-events: none;
+}
+
+.item-menu:hover {
+    color: var(--gray4);
+}
+
+.number-menu {
+    font-size: clamp(20px, 2vw, 45px);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--black2);
+    margin-left: 10px;
+    cursor: default;
+}
+
+.email {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: auto;
+}
+
+#type {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    text-transform: uppercase;
+    color: var(--black);
+    cursor: default;
+}
+
+#contact-email {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    line-height: 28px;
+    color: var(--black);
+    transition: all 0.2s cubic-bezier(1, -0.01, .02, .99);
+}
+
+#contact-email:hover {
+    text-decoration: underline;
+}
+
+@media (min-width:768px) {
+    .item-menu {
+        font-size: 9vw;
+    }
+}
+
+@media (min-width:1024px) {
+    #header {
+        padding: 20px;
+    }
+
+    .menu {
+        width: 87%;
+        height: 87%;
+        padding: 20px;
+    }
+
+    .menu-content-left {
+        justify-content: space-between;
+    }
+
+    .email {
+        display: flex;
+    }
+}
+
+@media (min-width:1336px) {
+    .item-menu {
+        font-size: 7vw;
+    }
+}
+
+@media (min-width:1440px) {
+    .item-menu {
+        font-size: 120px;
+        line-height: 100px;
+    }
+}

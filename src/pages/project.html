@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+{{head}}
+</head>
+
+<body class="project-page">
+    <div id="loader-container"></div>
+    <div id="header-container"></div>
+
+    <main>
+        <section class="hero-container">
+            <span class="hero-text" id="hero-text"></span>
+            <img id="hero-img" alt="Logo" class="hero-img">
+
+            <div class="hero-btn">
+                <a href="#" class="hero-btn1" id="hero-btn1">
+                    <span id="hero-btn1-text"></span>
+                </a>
+
+                <a href="#" class="hero-btn2" id="hero-btn2" target="_blank">
+                    <span id="hero-btn2-text"></span>
+                    <img alt="Icon" class="icon-hero-btn" id="hero-btn2-icon">
+                </a>
+            </div>
+        </section>
+
+        <div class="project-title">
+            <div>
+                <span id="project-title_text"></span>
+                <span id="project-title_num"></span>
+            </div>
+        </div>
+
+        <section class="video-wrapper">
+            <iframe
+                id="project-video"
+                title="Project video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </section>
+
+        <section class="project-description">
+            <div class="project-description-header">
+                <span id="project-description-header-text"></span>
+                <span class="section-header" id="section-header-description"></span>
+            </div>
+
+            <div class="project-info">
+                <div class="project-info-columns">
+                    <span id="project-description_1"></span>
+
+                    <span id="project-description_2">
+                        <span id="project-description_2_1"></span>
+                        <span id="project-description_2_2"></span>
+                    </span>
+
+                    <span id="project-description_3"></span>
+                    <span id="project-description_4"></span>
+                </div>
+            </div>
+        </section>
+
+        <div class="synopsis-gallery"></div>
+
+        <div id="image-modal" class="modal">
+            <img class="modal-content" id="modal-img">
+        </div>
+
+        <section class="project-slider" data-slider="slide-modelsheet">
+            <div class="project-slider-texts">
+                <span class="project-slider-texts_description"></span>
+                <span class="section-header"></span>
+            </div>
+
+            <div class="project-slider-container">
+                <div class="project-slider-track"></div>
+            </div>
+        </section>
+
+        <section class="concept">
+            <div class="concept-left">
+                <div class="section-header" id="concept-header"></div>
+
+                <div class="concept-text">
+                    <span id="concept-text-1"></span>
+                    <span id="concept-text-2"></span>
+                </div>
+
+                <div class="container-concept-img" id="concept-img-1">
+                    <div class="concept-img_text">
+                        <span id="concept-img-1-label"></span>
+                        <span id="concept-img-1-credit"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-concept-img concept-img-2" id="concept-img-2">
+                <div class="concept-img_text">
+                    <span id="concept-img-2-label"></span>
+                    <span id="concept-img-2-credit"></span>
+                </div>
+            </div>
+        </section>
+
+        <div class="project-image-fullscream"></div>
+
+        <section class="process" id="process">
+            <div class="process-sticky">
+                <div class="process-img">
+                    <img id="process-img" src="" alt="">
+                </div>
+
+                <div class="process-texto">
+                    <b id="process-title"></b>
+                    <span id="process-text"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-slider" data-slider="slide-backgrounds">
+            <div class="project-slider-texts">
+                <span class="project-slider-texts_description"></span>
+                <span class="section-header"></span>
+            </div>
+
+            <div class="project-slider-container">
+                <div class="project-slider-track"></div>
+            </div>
+        </section>
+
+        <section class="project-animation2d">
+            <div class="project-animation2d-texts">
+                <span class="project-animation2d-texts_description"></span>
+                <span class="section-header"></span>
+            </div>
+
+            <div class="project-animation2d-images">
+                <div class="project-animation2d-image" id="project-animation2d-image_1">
+                    <img src="" alt="">
+                </div>
+
+                <div class="project-animation2d-image" id="project-animation2d-image_2">
+                    <img src="" alt="">
+                </div>
+            </div>
+        </section>
+
+        <div class="project-image-fullscream" id="image-fullscream2"></div>
+
+        <section class="project-credits">
+            <div class="credits-container reveal02">
+                <span class="section-header" id="credits-header"></span>
+                <div id="participants-name"></div>
+            </div>
+        </section>
+
+        <section class="contact reveal03">
+            <a href="/contact" id="contact-text">
+                <span>Let's</span><br>
+                <span>Talk</span>
+            </a>
+
+            <span class="section-header" id="contact-header">/ GET IN TOUCH</span>
+        </section>
+
+        <section class="banner-container" id="tob-banner"></section>
+        <section class="tob-text-container" id="tob-text"></section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script type="application/json" id="project-data">{{projectData}}</script>
+{{scripts}}
+</body>
+
+</html>

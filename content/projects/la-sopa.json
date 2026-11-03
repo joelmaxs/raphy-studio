@@ -1,0 +1,23 @@
+{
+  "slug": "la-sopa",
+  "title": "LA SOPA - Animation",
+  "category": "commercial",
+  "order": 4,
+  "link": "external",
+  "externalUrl": "https://www.behance.net/gallery/226530433/LaSopa-Animation",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-lasopa.webp",
+    "video": "/assets/video/videos-projects/video-lasopa.mp4",
+    "coverPosition": "center"
+  },
+  "home": {
+    "show": false,
+    "order": 0,
+    "title": "",
+    "lead": "",
+    "paragraphs": [],
+    "cover": "",
+    "coverPosition": "center"
+  },
+  "seoDescription": ""
+}

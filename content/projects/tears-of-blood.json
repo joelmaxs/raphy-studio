@@ -1,0 +1,147 @@
+{
+  "slug": "tears-of-blood",
+  "title": "TOB KENJIケンジ - Official Trailer",
+  "category": "commercial",
+  "order": 3,
+  "link": "page",
+  "externalUrl": "",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-tob.webp",
+    "video": "/assets/video/videos-projects/video-tob.mp4",
+    "coverPosition": "left"
+  },
+  "home": {
+    "show": false,
+    "order": 0,
+    "title": "",
+    "lead": "",
+    "paragraphs": [],
+    "cover": "",
+    "coverPosition": "center"
+  },
+  "seoDescription": "Tears of Blood – Kenji ケンジ: Raphy Studios’ original animated short film series, coming in the second half of 2026.",
+  "legacyId": "tob",
+  "page": {
+    "theme": "white",
+    "logo": "white",
+    "menuIcon": "light",
+    "heading": {
+      "title": "",
+      "number": ""
+    },
+    "hero": {
+      "show": true,
+      "text": "In the second half of 2026",
+      "logo": "/assets/images/images-tob/logo.svg",
+      "button1Text": "Synopsis",
+      "button1Link": "#synopsis",
+      "button2Text": "VIEW TRAILER",
+      "button2Link": "https://www.youtube.com/watch?v=5r5KbFUPCEo",
+      "button2Icon": "/assets/images/images-tob/vector.svg"
+    },
+    "video": {
+      "youtubeId": "",
+      "youtubeShortsId": ""
+    },
+    "description": {
+      "header": "/ Synopsis",
+      "text": "<b>Kenjiケンジ,</b> a promising young martial artist training alongside his father\n in their home dojo, sees his life turned upside down after an unexpected\n attack sets him on an <b>unimaginable</b> path.",
+      "column1": "<b>A film by Igor Rafael\n Written by Thiago Samuel</b>",
+      "column2Title": "<b>This project began in late 2023.</b>",
+      "column2Text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+      "column3": "<b>An original short film series\n in development.</b>",
+      "column4": "<b>Scheduled for release in\n the second half of 2026.</b>"
+    },
+    "gallery": [
+      "/assets/images/images-tob/gallery/img1.webp",
+      "/assets/images/images-tob/gallery/img2.webp",
+      "/assets/images/images-tob/gallery/img3.webp",
+      "/assets/images/images-tob/gallery/img4.webp",
+      "/assets/images/images-tob/gallery/img5.webp",
+      "/assets/images/images-tob/gallery/img6.webp",
+      "/assets/images/images-tob/gallery/img7.webp",
+      "/assets/images/images-tob/gallery/img8.webp",
+      "/assets/images/images-tob/gallery/img9.webp",
+      "/assets/images/images-tob/gallery/img10.webp",
+      "/assets/images/images-tob/gallery/img11.webp",
+      "/assets/images/images-tob/gallery/img12.webp"
+    ],
+    "modelsheet": {
+      "title": "/ modelsheet",
+      "text": "A promising young martial artist training alongside his father in their home dojo, sees his life turned\n upside down after an unexpected attack sets him on an unimaginable path, sees his life turned upside\n down after an unexpected attack sets him on an unimaginable path.",
+      "images": [
+        "/assets/images/images-tob/slider1/img1.webp",
+        "/assets/images/images-tob/slider1/img1.webp",
+        "/assets/images/images-tob/slider1/img1.webp"
+      ]
+    },
+    "backgrounds": {
+      "title": "/ background",
+      "text": "Every environment in the short film was hand-painted, starting from an initial 3D render.\n In total, more than 85 paintings were created by real artists, with great care and passion for the project.",
+      "images": [
+        "/assets/images/images-tob/slider2/img1.webp",
+        "/assets/images/images-tob/slider2/img2.webp",
+        "/assets/images/images-tob/slider2/img3.webp",
+        "/assets/images/images-tob/slider2/img4.webp"
+      ]
+    },
+    "process": [
+      {
+        "title": "/ 3D Background Export",
+        "text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+        "image": "/assets/images/images-tob/process/img1.webp"
+      },
+      {
+        "title": "/ 2D Mattepainting",
+        "text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+        "image": "/assets/images/images-tob/process/img2.webp"
+      },
+      {
+        "title": "/ Mattepainting Projection",
+        "text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+        "image": "/assets/images/images-tob/process/img3.webp"
+      },
+      {
+        "title": "Final",
+        "text": "Soon, you'll discover more about the world of Fukkō 再建築\n in Tears of Blood – Kenji ケンジ",
+        "image": "/assets/images/images-tob/process/img4.webp"
+      }
+    ],
+    "concept": {
+      "header": "/ concept",
+      "text1": "The project's first explorations were created to depict Haruto's dojo, Kenji's\n grandfather. It's an environment surrounded by mountains that will play an\n important role and be explored much further in <b>Part 2</b> of the project.",
+      "text2": "Alongside that, we also created several color studies to define the mood of\n the opening scenes. This particular piece holds a special place for our team.\n It's one of <b>our favorite explorations</b> and perfectly captures the atmosphere\n we wanted to achieve.",
+      "image1": "/assets/images/images-tob/concept/img1.webp",
+      "image1Label": "COLORSCRIPT:",
+      "image1Credit": "Stephanie Arcas",
+      "image2": "/assets/images/images-tob/concept/img2.webp",
+      "image2Label": "FIRST CONCEPT:",
+      "image2Credit": "Justhin Hernández"
+    },
+    "fullImage1": "/assets/images/images-tob/img-full.webp",
+    "fullImage2": "",
+    "animation2d": {
+      "header": "",
+      "text": "",
+      "image1": "",
+      "image2": ""
+    },
+    "credits": {
+      "header": "",
+      "people": []
+    },
+    "contact": {
+      "show": false,
+      "header": ""
+    },
+    "trailerBanner": {
+      "show": true,
+      "title": "TEARS OF BLOOD\nFIRST TRAILER",
+      "link": "https://www.youtube.com/watch?v=5r5KbFUPCEo",
+      "text1": "This short film was born from a simple conversation between friends\nand a shared desire to create something of our own.",
+      "text2": "A first-time director, a screenwriter, and an illustrator came together,\nand from that collaboration emerged the biggest project we have\never had the honor of bringing to life.",
+      "text3": "A film made by us, for us."
+    },
+    "overflowVisible": true
+  }
+}

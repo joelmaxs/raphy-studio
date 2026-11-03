@@ -1,0 +1,25 @@
+{
+  "slug": "in-umbra-estellarum",
+  "title": "IN UMBRA ESTELLARUM",
+  "category": "commercial",
+  "order": 8,
+  "link": "external",
+  "externalUrl": "https://youtu.be/wfzf24yYibU?si=4E-_Uv3eFzyQGc_w",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-inlumbra.webp",
+    "video": "/assets/video/videos-projects/video-umbra.mp4",
+    "coverPosition": "right"
+  },
+  "home": {
+    "show": true,
+    "title": "In Umbra\nEstellarum",
+    "lead": "In Umbra Estellarum is our latest project, created entirely in Unreal Engine 5.",
+    "paragraphs": [
+      "This short film serves as a pilot for an original work that is currently in development."
+    ],
+    "cover": "/assets/images/images-home/inlumbra_capa.webp",
+    "coverPosition": "right",
+    "order": 2
+  },
+  "seoDescription": ""
+}

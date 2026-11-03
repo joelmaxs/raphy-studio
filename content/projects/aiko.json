@@ -1,0 +1,23 @@
+{
+  "slug": "aiko",
+  "title": "Aiko愛子 - Short Film",
+  "category": "commercial",
+  "order": 7,
+  "link": "external",
+  "externalUrl": "https://www.behance.net/gallery/219829667/Tears-of-Blood-Aiko-Short-Film",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-aiko.webp",
+    "video": "/assets/video/videos-projects/video-aiko.mp4",
+    "coverPosition": "center"
+  },
+  "home": {
+    "show": false,
+    "order": 0,
+    "title": "",
+    "lead": "",
+    "paragraphs": [],
+    "cover": "",
+    "coverPosition": "center"
+  },
+  "seoDescription": ""
+}

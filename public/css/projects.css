@@ -1,0 +1,353 @@
+.projects-page {
+    background: var(--white);
+}
+
+.projects-page .logo {
+    content: url("../assets/icons/logo-raphy-black.svg");
+}
+
+.projects-page #menu-open-icon {
+    content: url("../assets/icons/menu-close.svg");
+}
+
+.projects-container {
+    height: 50vh;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.projects-container-texts {
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 75px;
+    line-height: 70%;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+#projects-container-number {
+    font-size: 30px;
+    margin-left: -5px;
+}
+
+.projects {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    padding-bottom: 50px;
+}
+
+.project {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    height: 70vh;
+}
+
+.project img,
+.project video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* posição da capa: definida por projeto no painel (style inline) */
+
+.project video {
+    display: none;
+}
+
+.project-info {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    color: var(--white);
+}
+
+.project-info span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.layout-1,
+.layout2,
+.layout3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 100px;
+}
+
+.project.hidden {
+    display: none !important;
+}
+
+@media (min-width: 768px) {
+    .projects-container-texts {
+        font-size: 120px;
+        line-height: 60%;
+    }
+
+    #projects-container-number {
+        font-size: 35px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .projects-container {
+        padding: 20px;
+        height: 90vh;
+        align-items: end;
+        justify-content: start;
+    }
+
+    .projects-container-texts {
+        margin-bottom: 5px;
+        align-items: start;
+    }
+
+    .layout {
+        height: 100vh;
+    }
+
+    .layout-1 > .project:nth-child(1) {
+        height: 95vh;
+    }
+
+    .layout-1 > .project:nth-child(2),
+    .layout3 > .project {
+        height: 50vh;
+    }
+
+    .layout2 > .project {
+        height: 100vh;
+    }
+
+    .project-info {
+        opacity: 0;
+        padding: 0;
+        transform: translateY(20px);
+        transition: all 0.6s cubic-bezier(.77, .06, 0, .97);
+    }
+
+    .project:hover .project-info {
+        opacity: 1;
+        padding: 15px;
+        transform: translateY(0);
+    }
+
+    .layout-1 > .project:nth-child(2) .project-info span:last-child {
+        margin-right: 20px;
+    }
+
+    .project video {
+        display: block;
+    }
+
+    .project img {
+        display: none;
+    }
+
+    .layout-1,
+    .layout2,
+    .layout3 {
+        gap: 20px;
+    }
+
+    .layout-1 {
+        grid-template-columns: 60% 40%;
+    }
+
+    .layout3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1366px) {
+    .projects-container-texts {
+        font-size: 10vw;
+        line-height: 60%;
+        margin-bottom: 10px;
+    }
+
+    #projects-container-number {
+        font-size: 45px;
+        margin-left: -15px;
+    }
+}
+
+.clients {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.clients-container {
+    z-index: 1;
+    width: 97.65%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background: var(--black);
+    color: var(--white);
+    padding: 15px;
+    gap: 10px;
+    transform-origin: top right;
+    transform: rotate(-3deg);
+    transition: all 0.4s cubic-bezier(.77, .02, 0, .97);
+}
+
+.clients-container:hover {
+    transform: rotate(-1.5deg);
+}
+
+#clients-header {
+    display: block;
+    color: var(--gray1);
+}
+
+#clients-name {
+    cursor: default;
+    max-width: 95%;
+    font-weight: 600;
+    text-align: justify;
+    font-size: 27px;
+}
+
+@media (min-width: 768px) {
+    .clients-container {
+        padding: 20px;
+    }
+
+    #clients-name {
+        font-size: 32px;
+        text-align: left;
+    }
+}
+
+@media (min-width: 1440px) {
+    .clients-container {
+        height: 550px;
+    }
+
+    #clients-name {
+        font-size: 40px;
+        text-align: left;
+    }
+}
+
+.contact {
+    margin-top: -300px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 110%;
+    height: 35vh;
+    max-height: 300px;
+    padding: 15px;
+    background: var(--gray1);
+    transform-origin: top left;
+    transform: rotate(3deg);
+    transition: all 0.4s cubic-bezier(.77, .02, 0, .97);
+}
+
+.contact:hover {
+    transform: rotate(1deg);
+}
+
+#contact-text {
+    font-weight: 900;
+    font-size: 110px;
+    line-height: 80%;
+    text-transform: uppercase;
+    color: var(--black);
+    text-wrap: wrap;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+#contact-header {
+    color: var(--black);
+    display: none;
+}
+
+@media (min-width:768px) {
+    .contact {
+        padding: 20px;
+        width: 97.65%;
+    }
+
+    #contact-text {
+        font-size: 130px;
+    }
+
+    #contact-header {
+        display: flex;
+    }
+}
+
+@media (min-width:1024px) {
+    .contact br {
+        display: none;
+    }
+}
+
+@media (min-width:1366px) {
+    #contact-text {
+        font-size: 180px;
+    }
+}
+
+#footer-container {
+    position: relative;
+    z-index: 3;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s;
+    transition-delay: 0.7s;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all 1s;
+}
+
+.reveal02 {
+    transform: rotate(-8deg);
+    transition: all 10s cubic-bezier(.06, .34, .11, .95);
+}
+
+.show02 {
+    transform: rotate(-2deg);
+    transition: all 1s cubic-bezier(.06, .34, .11, .95);
+}
+
+.reveal03 {
+    transform: rotate(8deg);
+    transition: all 10s cubic-bezier(.06, .34, .11, .95);
+}
+
+.show03 {
+    transform: rotate(2deg);
+    transition: all 1s cubic-bezier(.06, .34, .11, .95);
+}

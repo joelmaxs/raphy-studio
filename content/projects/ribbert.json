@@ -1,0 +1,23 @@
+{
+  "slug": "ribbert",
+  "title": "RIBBERT - Teaser",
+  "category": "commercial",
+  "order": 6,
+  "link": "external",
+  "externalUrl": "https://www.behance.net/gallery/224444747/Ribbert-Animation-Teaser",
+  "grid": {
+    "cover": "/assets/images/images-projects/capa-ribbert.webp",
+    "video": "/assets/video/videos-projects/video-ribbert.mp4",
+    "coverPosition": "65%"
+  },
+  "home": {
+    "show": false,
+    "order": 0,
+    "title": "",
+    "lead": "",
+    "paragraphs": [],
+    "cover": "",
+    "coverPosition": "center"
+  },
+  "seoDescription": ""
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+{{head}}
+</head>
+
+<body class="projects-page">
+    <div id="loader-container"></div>
+    <div id="header-container"></div>
+
+    <main>
+        <section class="projects-container">
+            <div class="projects-container-texts">
+                <span>
+                    All
+                    <span id="projects-container-number">{{projectCount}}</span>
+                </span>
+                <span>Projects</span>
+            </div>
+        </section>
+
+        <section class="projects">
+{{gridProjects}}
+        </section>
+
+        <section class="clients">
+            <div class="clients-container reveal02">
+                <span class="section-header" id="clients-header">/ Clients & partners</span>
+
+                <span id="clients-name">
+                    Riot Games / Blizzard Entertainment / Shell / Goodboy Creative / Senna Brasil / Pubg /
+                    Team Falcons
+                </span>
+            </div>
+        </section>
+
+        <section class="contact reveal03">
+            <a href="/contact" id="contact-text">
+                <span>Let's</span><br>
+                <span>Talk</span>
+            </a>
+
+            <span class="section-header" id="contact-header">/ GET IN TOUCH</span>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+{{scripts}}
+</body>
+
+</html>

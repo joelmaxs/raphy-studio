@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+{{head}}
+</head>
+
+<body>
+    <div id="loader-container"></div>
+    <div id="header-container"></div>
+
+    <main>
+        <div class="container">
+            <div class="video-intro-home">
+                <video autoplay muted loop playsinline>
+                    <source src="/assets/video/video-home.mp4" type="video/mp4">
+                </video>
+
+                <div class="logos-aleatorias" style="pointer-events: none;">
+                    <img src="/assets/images/images-home/logo1.webp" alt="Logo 1">
+                    <img src="/assets/images/images-home/logo2.webp" alt="Logo 2">
+                    <img src="/assets/images/images-home/logo3.webp" alt="Logo 3">
+                </div>
+            </div>
+        </div>
+
+        <section class="about-us reveal02">
+            <div class="about-top">
+                <span id="about-top-text">
+                    <b>We are Raphy,</b> an animation studio based in Northeastern Brazil. We create
+                    <b>3D animations, 2D illustrations, music videos, game trailers,</b> and a wide range of
+                    digital content.
+                </span>
+
+                <span class="section-header">The lowdown /</span>
+            </div>
+
+            <div class="about-bottom">
+                <span id="about-bottom-text">
+                    <b>Tears of Blood</b> is our flagship original project, following the journey of a young man
+                    named <b>Kenji ケンジ.</b> The first act is slated for release in the
+                    <b>second half of 2026.</b>
+                </span>
+
+                <a href="https://www.youtube.com/watch?v=5r5KbFUPCEo" target="_blank" class="about-btn">
+                    <span>VIEW TRAILER</span>
+                    <img src="/assets/icons/arrow.svg" alt="Seta svg" id="about-btn-icon">
+                </a>
+            </div>
+        </section>
+
+        <a href="https://www.youtube.com/watch?v=5r5KbFUPCEo" target="_blank" class="video-bg-curta" id="curta">
+            <video autoplay muted loop playsinline>
+                <source src="/assets/video/video-tob-home.mp4" type="video/mp4">
+            </video>
+        </a>
+
+        <div style="background: var(--white);">
+            <section class="projects">
+{{homeProjects}}
+            </section>
+
+            <section class="clients">
+                <div class="container-clients reveal02">
+                    <div class="clients-top">
+                        <span class="section-header" id="clients-header">/ Clients & partners</span>
+
+                        <span class="clients-name">
+                            Riot Games / Blizzard Entertainment / Shell / Goodboy Creative / Senna Brasil / Pubg /
+                            Team Falcons
+                        </span>
+                    </div>
+
+                    <a href="https://www.youtube.com/watch?v=h8QMu_unHoc" target="_blank" id="showreeal">
+                        <span id="showreeal-text">
+                            SHOW<br>
+                            REEL
+                            <span id="showreeal-num">2025</span>
+                        </span>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <a href="https://www.youtube.com/watch?v=h8QMu_unHoc" target="_blank" class="video-showreel">
+            <video autoplay muted loop playsinline>
+                <source src="/assets/video/video-reel.mp4" type="video/mp4">
+            </video>
+        </a>
+
+        <section class="contact reveal03">
+            <a href="/contact" id="contact-text">
+                <span>Let's</span><br>
+                <span>Talk</span>
+            </a>
+
+            <span class="section-header" id="contact-header">/ GET IN TOUCH</span>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+{{scripts}}
+</body>
+
+</html>
