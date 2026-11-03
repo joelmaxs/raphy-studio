@@ -1,10 +1,11 @@
 {
   "slug": "rush",
   "title": "RUSH - Valorant Cinematic",
-  "category": "originals",
+  "published": true,
   "order": 1,
+  "category": "originals",
   "link": "page",
-  "externalUrl": "",
+  "seoDescription": "Rush is a fan-made Valorant cinematic produced by Raphy Studios, blending 2D and 3D with watercolor-inspired textures.",
   "grid": {
     "cover": "/assets/images/images-projects/capa-rush.webp",
     "video": "/assets/video/videos-projects/video-rush.mp4",
@@ -12,19 +13,17 @@
   },
   "home": {
     "show": true,
+    "order": 1,
     "title": "Rush\nCinematic",
     "lead": "Rush is a fan-made cinematic we produced in late 2025.",
     "paragraphs": [
       "In it, we explored a unique visual style that blends 2D and 3D elements, enhanced by watercolor-inspired textures and a soft pastel color palette."
     ],
     "cover": "/assets/images/images-home/rush_capa.webp",
-    "coverPosition": "center",
-    "order": 1
+    "coverPosition": "center"
   },
-  "seoDescription": "Rush is a fan-made Valorant cinematic produced by Raphy Studios, blending 2D and 3D with watercolor-inspired textures.",
-  "legacyId": "rush",
   "page": {
-    "theme": "white",
+    "theme": "black",
     "logo": "black",
     "menuIcon": "dark",
     "heading": {
@@ -67,6 +66,14 @@
         "/assets/images/images-rush/slider1/img4.webp"
       ]
     },
+    "concept": {
+      "header": "/ texturing",
+      "text1": "The project's first explorations were created to depict Haruto's dojo, Kenji's\n grandfather. It's an environment surrounded by mountains that will play an\n important role and be explored much further in <b>Part 2</b> of the project.",
+      "text2": "Alongside that, we also created several color studies to define the mood of\n the opening scenes. This particular piece holds a special place for our team.\n It's one of <b>our favorite explorations</b> and perfectly captures the atmosphere\n we wanted to achieve.",
+      "image1": "/assets/images/images-rush/concept/img1.webp",
+      "image2": "/assets/images/images-rush/concept/img2.webp"
+    },
+    "fullImage1": "/assets/images/images-rush/img-full1.webp",
     "backgrounds": {
       "title": "/ background",
       "text": "Every environment in the short film was hand-painted, starting from an initial 3D render.\n In total, more than 85 paintings were created by real artists, with great care and passion for the project.",
@@ -76,26 +83,13 @@
         "/assets/images/images-rush/slider2/img3.webp"
       ]
     },
-    "process": [],
-    "concept": {
-      "header": "/ texturing",
-      "text1": "The project's first explorations were created to depict Haruto's dojo, Kenji's\n grandfather. It's an environment surrounded by mountains that will play an\n important role and be explored much further in <b>Part 2</b> of the project.",
-      "text2": "Alongside that, we also created several color studies to define the mood of\n the opening scenes. This particular piece holds a special place for our team.\n It's one of <b>our favorite explorations</b> and perfectly captures the atmosphere\n we wanted to achieve.",
-      "image1": "/assets/images/images-rush/concept/img1.webp",
-      "image1Label": "",
-      "image1Credit": "",
-      "image2": "/assets/images/images-rush/concept/img2.webp",
-      "image2Label": "",
-      "image2Credit": ""
-    },
-    "fullImage1": "/assets/images/images-rush/img-full1.webp",
-    "fullImage2": "/assets/images/images-rush/img-full2.webp",
     "animation2d": {
       "header": "/ 2D ANIMATION",
       "text": "A promising young martial artist training alongside his father in their home dojo, sees his life turned\n upside down after an unexpected attack sets him on an unimaginable path, sees his life turned upside\n down after an unexpected attack sets him on an unimaginable path.",
       "image1": "/assets/images/images-rush/animation2d/img1.webp",
       "image2": "/assets/images/images-rush/animation2d/img2.webp"
     },
+    "fullImage2": "/assets/images/images-rush/img-full2.webp",
     "credits": {
       "header": "/ CREDITS",
       "people": [
@@ -128,24 +122,21 @@
           "role": "Texturing Artist"
         },
         {
-          "name": "/ Pedro Sine",
-          "role": ""
+          "name": "/ Pedro Sine"
         },
         {
           "name": "/ Luyd Antony",
           "role": "Mattepainting Artists"
         },
         {
-          "name": "/ Murilo Caetano",
-          "role": ""
+          "name": "/ Murilo Caetano"
         },
         {
           "name": "/ Igor R.",
           "role": "3D Animators"
         },
         {
-          "name": "/ Juan Kaio",
-          "role": ""
+          "name": "/ Juan Kaio"
         },
         {
           "name": "/ Amanda Aguiar",
@@ -162,13 +153,9 @@
       "header": "GET IN TOUCH"
     },
     "trailerBanner": {
-      "show": false,
-      "title": "",
-      "link": "",
-      "text1": "",
-      "text2": "",
-      "text3": ""
+      "show": false
     },
     "overflowVisible": false
-  }
+  },
+  "legacyId": "rush"
 }
