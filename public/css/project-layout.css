@@ -1259,3 +1259,16 @@
     position: relative;
     z-index: 100;
 }
+/* créditos no mobile: em linha, como no desktop */
+@media (max-width:767px) {
+    #participants-name {
+        max-width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px 10px;
+    }
+
+    .credit-item {
+        font-size: 21px;
+    }
+}
