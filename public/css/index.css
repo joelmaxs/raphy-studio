@@ -736,3 +736,14 @@
     transform: rotate(2deg);
     transition: all 1s cubic-bezier(.06, .34, .11, .95);
 }
+/* clientes (home): no máximo 90% da largura, alinhado à esquerda, com a / sempre no fim da linha */
+.clients-name {
+    display: block;
+    text-align: left;
+}
+
+@media (min-width:768px) {
+    .clients-name {
+        max-width: 90%;
+    }
+}
