@@ -1,53 +1,15 @@
+// As seções da página de projeto já vêm prontas do build (blocos do painel, na ordem escolhida).
+// Aqui ficam só os comportamentos: cores da página, vídeo, galeria, sliders e processo.
 function buildProjectPage(project) {
     setupPageStyle(project);
-    setupTitle(project);
-    setupHero(project);
-    setupVideo(project.video);
-    setupDescription(project);
-    setupGallery(project.gallery);
-    setupSliders(project);
-    setupConcept(project);
-    setupFullscreenImages(project);
-    setupProcess(project);
-    setupAnimation2d(project);
-    setupCredits(project);
-    setupContact(project);
-    setupTob(project);
+    document.querySelectorAll(".video-wrapper[data-yt]").forEach(setupVideo);
+    document.querySelectorAll(".synopsis-gallery").forEach(setupGalleryModal);
+    document.querySelectorAll(".project-slider").forEach(section => setupSliderBehavior(section));
+    document.querySelectorAll("section.process[data-steps]").forEach(setupProcess);
 }
 
-function setText(selector, value) {
-    const el = document.querySelector(selector);
-
-    if (!el) return;
-
-    if (value) {
-        el.innerHTML = formatText(value);
-    } else {
-        el.style.display = "none";
-    }
-}
-
-function formatText(text) {
-    if (!text) return "";
-
-    return text.replace(/\n/g, "<br>");
-}
-
-function hideSection(selectorOrEl) {
-    const el =
-        typeof selectorOrEl === "string"
-            ? document.querySelector(selectorOrEl)
-            : selectorOrEl;
-
+function hideSection(el) {
     if (el) el.style.display = "none";
-}
-
-function setBackgroundImage(el, src) {
-    if (!el) return;
-
-    if (src) {
-        el.style.backgroundImage = `url("${src}")`;
-    }
 }
 
 function setupPageStyle(project) {
@@ -82,310 +44,82 @@ function setupPageStyle(project) {
     }
 }
 
-function setupTitle(project) {
-    const section = document.querySelector(".project-title");
-
-    if (!section) return;
-
-    if (!project.title && !project.number) {
-        hideSection(section);
-        return;
-    }
-
-    setText("#project-title_text", project.title);
-    setText("#project-title_num", project.number);
-}
-
-function setupHero(project) {
-    const section = document.querySelector(".hero-container");
-
-    if (!section) return;
-
-    const hero = project.hero;
-
-    if (!hero) {
-        hideSection(section);
-        return;
-    }
-
-    const text = document.querySelector("#hero-text");
-    const logo = document.querySelector("#hero-img");
-
-    const button1 = document.querySelector("#hero-btn1");
-    const button1Text = document.querySelector("#hero-btn1-text");
-
-    const button2 = document.querySelector("#hero-btn2");
-    const button2Text = document.querySelector("#hero-btn2-text");
-    const button2Icon = document.querySelector("#hero-btn2-icon");
-
-    if (text) {
-        text.innerHTML = formatText(hero.text || "");
-    }
-
-    if (logo && hero.logo) {
-        logo.src = hero.logo;
-    } else if (logo) {
-        hideSection(logo);
-    }
-
-    if (hero.button1) {
-        if (button1) {
-            button1.href = hero.button1.href || "#";
-        }
-
-        if (button1Text) {
-            button1Text.textContent = hero.button1.text || "";
-        }
-    } else {
-        hideSection(button1);
-    }
-
-    if (hero.button2) {
-        if (button2) {
-            button2.href = hero.button2.href || "#";
-        }
-
-        if (button2Text) {
-            button2Text.textContent = hero.button2.text || "";
-        }
-
-        if (button2Icon && hero.button2.icon) {
-            button2Icon.src = hero.button2.icon;
-        } else if (button2Icon) {
-            hideSection(button2Icon);
-        }
-    } else {
-        hideSection(button2);
-    }
-}
-
 let youtubePlayer = null;
-let videoObserver = null;
 
-function setupVideo(video) {
-    const iframe = document.querySelector("#project-video");
-    const wrapper = document.querySelector(".video-wrapper");
+function setupVideo(wrapper) {
+    const iframe = wrapper.querySelector("iframe");
 
-    if (!iframe || !wrapper) {
-        console.warn("Elemento do vídeo não encontrado.");
-        return;
-    }
-
-    if (!video || !video.youtubeId) {
-        hideSection(wrapper);
-        return;
-    }
+    if (!iframe) return;
 
     const isMobile = window.innerWidth <= 768;
-
-    const videoId =
-        isMobile && video.youtubeShortsId
-            ? video.youtubeShortsId
-            : video.youtubeId;
+    const videoId = isMobile && wrapper.dataset.ytMobile
+        ? wrapper.dataset.ytMobile
+        : wrapper.dataset.yt;
 
     iframe.src =
         `https://www.youtube.com/embed/${videoId}` +
-        `?enablejsapi=1` +
-        `&autoplay=0` +
-        `&mute=1` +
-        `&controls=1` +
-        `&playsinline=1`;
+        `?enablejsapi=1&autoplay=0&mute=1&controls=1&playsinline=1`;
 
-    iframe.addEventListener(
-        "load",
-        () => {
-            if (!window.YT || !YT.Player) {
-                console.warn("YouTube API ainda não carregou.");
-                return;
+    iframe.addEventListener("load", () => {
+        if (!window.YT || !YT.Player) return;
+
+        const player = new YT.Player(iframe, {
+            events: {
+                onReady: () => {
+                    new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            if (entry.intersectionRatio >= 0.7) player.playVideo();
+                            else player.pauseVideo();
+                        });
+                    }, { threshold: [0, 0.7] }).observe(iframe);
+                }
             }
-
-            youtubePlayer = new YT.Player(iframe, {
-                events: {
-                    onReady: () => {
-                        setupVideoObserver(iframe);
-                    }
-                }
-            });
-        },
-        { once: true }
-    );
-}
-
-function setupVideoObserver(iframe) {
-    if (videoObserver) {
-        videoObserver.disconnect();
-    }
-
-    videoObserver = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-                if (!youtubePlayer) return;
-
-                if (entry.intersectionRatio >= 0.7) {
-                    youtubePlayer.playVideo();
-                } else {
-                    youtubePlayer.pauseVideo();
-                }
-            });
-        },
-        {
-            threshold: [0, 0.7]
-        }
-    );
-
-    videoObserver.observe(iframe);
-}
-
-function setupDescription(project) {
-    const section = document.querySelector(".project-description");
-
-    if (!project.description && !project.info) {
-        hideSection(section);
-        return;
-    }
-
-    setText("#project-description-header-text", project.description);
-    setText("#section-header-description", project["description-header"]);
-
-    const info = project.info || {};
-
-    setText("#project-description_1", info.description_1);
-    setText("#project-description_2_1", info.description_2_1);
-    setText("#project-description_2_2", info.description_2_2);
-    setText("#project-description_3", info.description_3);
-    setText("#project-description_4", info.description_4);
-}
-
-// setupGallery(): definida em js/main.js (galeria + modal de imagem).
-
-function setupSliders(project) {
-    const sliderSections = document.querySelectorAll(".project-slider");
-
-    if (!sliderSections.length) {
-        return;
-    }
-
-    sliderSections.forEach(section => {
-        const sliderKey = section.dataset.slider;
-
-        if (!sliderKey) {
-            return;
-        }
-
-        const data = project[sliderKey];
-
-        if (!data || !Array.isArray(data)) {
-            hideSection(section);
-            return;
-        }
-
-        const descriptionObj = data.find(item =>
-            Object.prototype.hasOwnProperty.call(item, "slide-description")
-        );
-
-        const titleObj = data.find(item =>
-            Object.prototype.hasOwnProperty.call(item, "slide-title")
-        );
-
-        const imgsObj = data.find(item =>
-            Object.prototype.hasOwnProperty.call(item, "slide-imgs")
-        );
-
-        const description =
-            descriptionObj?.["slide-description"] || "";
-
-        const title = titleObj?.["slide-title"] || "";
-        const imgs = imgsObj?.["slide-imgs"] || [];
-
-        if (!imgs.length) {
-            hideSection(section);
-            return;
-        }
-
-        const descriptionElement = section.querySelector(
-            ".project-slider-texts_description"
-        );
-
-        const titleElement = section.querySelector(".section-header");
-        const track = section.querySelector(".project-slider-track");
-
-        if (descriptionElement) {
-            descriptionElement.innerHTML = formatText(description);
-        }
-
-        if (titleElement) {
-            titleElement.textContent = title;
-        }
-
-        if (!track) {
-            console.error("project-slider-track não encontrado.");
-            return;
-        }
-
-        track.innerHTML = "";
-
-        imgs.forEach((src, index) => {
-            const slide = document.createElement("div");
-
-            slide.className = "project-slide";
-            slide.dataset.slide = index + 1;
-
-            const img = document.createElement("img");
-
-            img.src = src;
-            img.alt = title;
-            img.draggable = false;
-
-            slide.appendChild(img);
-            track.appendChild(slide);
         });
 
-        setupSliderBehavior(section);
-    });
+        youtubePlayer = youtubePlayer || player;
+    }, { once: true });
 }
 
-function setupFullscreenImages(project) {
-    const fullscreenDivs = document.querySelectorAll(
-        ".project-image-fullscream"
-    );
+function setupGalleryModal(gallery) {
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-img");
 
-    const imgs = [
-        project["image-full1"],
-        project["image-full2"]
-    ];
+    if (!modal || !modalImg) return;
 
-    fullscreenDivs.forEach((div, i) => {
-        if (imgs[i]) {
-            setBackgroundImage(div, imgs[i]);
-        } else {
-            hideSection(div);
-        }
+    gallery.addEventListener("click", e => {
+        if (window.innerWidth < 1366) return;
+        if (!e.target.classList.contains("gallery-img")) return;
+
+        modalImg.src = e.target.src;
+        modal.style.display = "flex";
     });
+
+    if (!modal.dataset.bound) {
+        modal.dataset.bound = "1";
+        modal.addEventListener("click", () => {
+            modal.style.display = "none";
+            modalImg.src = "";
+        });
+    }
 }
 
-function setupProcess(project) {
-    const section = document.getElementById("process");
+function setupProcess(section) {
+    let steps = [];
 
-    if (!section) {
-        return;
+    try {
+        steps = JSON.parse(section.dataset.steps || "[]");
+    } catch (e) {
+        steps = [];
     }
 
-    const process = project.process;
-
-    if (
-        !process ||
-        !Array.isArray(process.steps) ||
-        !process.steps.length
-    ) {
+    if (!steps.length) {
         hideSection(section);
         return;
     }
 
-    const steps = process.steps;
-
-    const imgEl = document.getElementById("process-img");
-    const titleEl = document.getElementById("process-title");
-    const textEl = document.getElementById("process-text");
+    const imgEl = section.querySelector("#process-img");
+    const titleEl = section.querySelector("#process-title");
+    const textEl = section.querySelector("#process-text");
 
     if (!imgEl || !titleEl || !textEl) {
         return;
@@ -559,308 +293,3 @@ function setupProcess(project) {
     onScroll();
 }
 
-function setupConcept(project) {
-    const section = document.querySelector(".concept");
-
-    if (!section) return;
-
-    const concept = project.concept;
-
-    if (!concept) {
-        hideSection(section);
-        return;
-    }
-
-    const header = document.querySelector("#concept-header");
-
-    if (header) {
-        header.textContent = concept.header || "";
-    }
-
-    setText("#concept-text-1", concept.text1);
-    setText("#concept-text-2", concept.text2);
-
-    setupConceptImage(
-        concept.image1,
-        "#concept-img-1",
-        "#concept-img-1-label",
-        "#concept-img-1-credit"
-    );
-
-    setupConceptImage(
-        concept.image2,
-        "#concept-img-2",
-        "#concept-img-2-label",
-        "#concept-img-2-credit"
-    );
-}
-
-function setupConceptImage(
-    data,
-    containerSelector,
-    labelSelector,
-    creditSelector
-) {
-    const container = document.querySelector(containerSelector);
-
-    if (!container) return;
-
-    if (!data || !data.src) {
-        hideSection(container);
-        return;
-    }
-
-    container.style.backgroundImage =
-        `url("${data.src}")`;
-
-    const label = document.querySelector(labelSelector);
-
-    if (label) {
-        label.textContent = data.label || "";
-    }
-
-    const credit = document.querySelector(creditSelector);
-
-    if (credit) {
-        credit.textContent = data.credit || "";
-    }
-}
-
-function setupAnimation2d(project) {
-    const section = document.querySelector(".project-animation2d");
-
-    if (!section) return;
-
-    if (
-        !project["animation2d-img1"] &&
-        !project["animation2d-img2"]
-    ) {
-        hideSection(section);
-        return;
-    }
-
-    const descriptionEl = section.querySelector(
-        ".project-animation2d-texts_description"
-    );
-
-    const headerEl = section.querySelector(
-        ".project-animation2d-texts .section-header"
-    );
-
-    if (descriptionEl) {
-        descriptionEl.innerHTML = formatText(
-            project["animation2d-description"] || ""
-        );
-    }
-
-    if (headerEl) {
-        headerEl.textContent =
-            project["animation2d-header"] || "";
-    }
-
-    const container1 = document.querySelector(
-        "#project-animation2d-image_1"
-    );
-
-    const img1 = container1?.querySelector("img");
-
-    if (img1 && project["animation2d-img1"]) {
-        img1.src = project["animation2d-img1"];
-    } else {
-        hideSection(container1);
-    }
-
-    const container2 = document.querySelector(
-        "#project-animation2d-image_2"
-    );
-
-    const img2 = container2?.querySelector("img");
-
-    if (img2 && project["animation2d-img2"]) {
-        img2.src = project["animation2d-img2"];
-    } else {
-        hideSection(container2);
-    }
-}
-
-function setupCredits(project) {
-    const section = document.querySelector(".project-credits");
-
-    if (!section) return;
-
-    if (
-        !project.credits ||
-        !Array.isArray(project.credits) ||
-        !project.credits.length
-    ) {
-        hideSection(section);
-        return;
-    }
-
-    setText("#credits-header", project["credits-header"]);
-
-    const container = document.querySelector("#participants-name");
-
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    project.credits.forEach(person => {
-        const item = document.createElement("div");
-        item.classList.add("credit-item");
-
-        const name = document.createElement("span");
-        name.classList.add("credit-name");
-        name.textContent = person.name || "";
-
-        item.appendChild(name);
-
-        if (person.role) {
-            const roleElement = document.createElement("span");
-
-            roleElement.classList.add("credit-role");
-
-            roleElement.textContent = Array.isArray(person.role)
-                ? person.role.join(", ")
-                : person.role;
-
-            item.appendChild(roleElement);
-        }
-
-        container.appendChild(item);
-    });
-}
-
-function setupContact(project) {
-    const section = document.querySelector(".contact");
-
-    if (!section) return;
-
-    if (!project.contact) {
-        hideSection(section);
-        return;
-    }
-
-    section.style.display = "";
-
-    const contact = project.contact;
-
-    if (typeof contact === "object") {
-        const contactText =
-            document.querySelector("#contact-text");
-
-        const contactHeader =
-            document.querySelector("#contact-header");
-
-        if (contactText && contact.text) {
-            contactText.innerHTML = formatText(contact.text);
-        }
-
-        if (contactHeader && contact.header) {
-            contactHeader.textContent = contact.header;
-        }
-    }
-}
-
-function setupTob(project) {
-    const bannerSection = document.querySelector("#tob-banner");
-    const textSection = document.querySelector("#tob-text");
-
-    if (!bannerSection && !textSection) {
-        return;
-    }
-
-    if (!project.tob) {
-        if (bannerSection) {
-            hideSection(bannerSection);
-        }
-
-        if (textSection) {
-            hideSection(textSection);
-        }
-
-        return;
-    }
-
-    const tob = project.tob;
-
-    if (bannerSection) {
-        bannerSection.innerHTML = `
-            <a
-                href="${tob.link || "https://www.youtube.com/watch?v=5r5KbFUPCEo"}"
-                class="banner"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <span id="banner-title"></span>
-
-                <span class="banner-btn">
-                    <span>WATCH NOW</span>
-
-                    <img
-                        src="/assets/images/images-tob/vector.svg"
-                        alt="Icon"
-                        class="icon-banner-btn"
-                    >
-                </span>
-            </a>
-        `;
-
-        const bannerTitle =
-            bannerSection.querySelector("#banner-title");
-
-        if (bannerTitle) {
-            bannerTitle.innerHTML = formatText(
-                tob.title || "TEARS OF BLOOD\nFIRST TRAILER"
-            );
-        }
-
-        bannerSection.style.display = "";
-    }
-
-    if (textSection) {
-        textSection.innerHTML = `
-            <div class="tob-text">
-                <span id="tob-text-1"></span>
-                <span id="tob-text-2"></span>
-                <span id="tob-text-3">
-                    <b></b>
-                </span>
-
-                <img
-                    src="/assets/icons/logo-raphy-white.svg"
-                    alt="Raphy Studios"
-                >
-            </div>
-        `;
-
-        const text1 =
-            textSection.querySelector("#tob-text-1");
-
-        const text2 =
-            textSection.querySelector("#tob-text-2");
-
-        const text3 =
-            textSection.querySelector("#tob-text-3");
-
-        if (text1) {
-            text1.innerHTML = formatText(tob.text1 || "");
-        }
-
-        if (text2) {
-            text2.innerHTML = formatText(tob.text2 || "");
-        }
-
-        if (text3) {
-            const bold = text3.querySelector("b");
-
-            if (bold) {
-                bold.innerHTML = formatText(tob.text3 || "");
-            } else {
-                text3.innerHTML = formatText(tob.text3 || "");
-            }
-        }
-
-        textSection.style.display = "";
-    }
-}

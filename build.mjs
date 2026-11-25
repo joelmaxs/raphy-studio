@@ -43,6 +43,24 @@ const projects = readdirSync(join(ROOT, "content/projects"))
   .map((f) => {
     const p = JSON.parse(read(`content/projects/${f}`));
     p.slug = (p.slug || f.replace(/\.json$/, "")).trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-");
+    // painel: "Ao clicar" é um bloco único — página própria OU link externo
+    if (Array.isArray(p.destination)) {
+      const d = p.destination[0] || { type: "external", url: "" };
+      if (d.type === "page") {
+        p.link = "page";
+        p.page = { theme: d.theme, logo: d.logo, menuIcon: d.menuIcon, overflowVisible: d.overflowVisible, sections: d.sections || [] };
+        if (d.seoDescription) p.seoDescription = d.seoDescription;
+      } else {
+        p.link = "external";
+        p.externalUrl = d.url || "";
+        delete p.page;
+      }
+    }
+    // painel: destaque na Home só existe se o bloco foi adicionado
+    if (Array.isArray(p.homeHighlight)) {
+      const h = p.homeHighlight[0];
+      p.home = h ? { show: true, ...h } : { show: false };
+    }
     return p;
   })
   .filter((p) => p.published !== false)
@@ -169,65 +187,219 @@ function gridProjects() {
                     </div>
                 </a>`;
   };
-  let out = "", i = 0, gi = 0;
-  while (i < projects.length) {
-    const g = GROUPS[gi % GROUPS.length];
-    const items = projects.slice(i, i + g.size).map((p, k) => card(p, i + k + 1));
-    out += `            ${g.open}\n${items.join("\n\n")}\n            </div>\n\n`;
-    i += g.size;
-    gi++;
+  // grade montada no painel (content/projects-page.json); sem configuração, segue o padrão 2 / 1 / 3
+  const OPEN = { 1: GROUPS[1].open, 2: GROUPS[0].open, 3: GROUPS[2].open };
+  const bySlug = new Map(projects.map((p) => [p.slug, p]));
+  const used = new Set();
+  const rows = [];
+  let cfg = {};
+  try { cfg = JSON.parse(read("content/projects-page.json")); } catch {}
+  for (const r of cfg.rows || []) {
+    const refs = (Array.isArray(r.projects) ? r.projects : [r.projects])
+      .map((v) => String(v || "").replace(/^.*\//, "").replace(/\.json$/, ""))
+      .map((slug) => bySlug.get(slug))
+      .filter((p) => p && !used.has(p.slug));
+    const size = Math.min(Number(r.layout) || refs.length, 3);
+    for (let k = 0; k < refs.length; k += size) {
+      const chunk = refs.slice(k, k + size);
+      chunk.forEach((p) => used.add(p.slug));
+      rows.push(chunk);
+    }
+  }
+  const rest = projects.filter((p) => !used.has(p.slug));
+  let gi = 0;
+  for (let i = 0; i < rest.length; gi++) {
+    const size = GROUPS[gi % GROUPS.length].size;
+    rows.push(rest.slice(i, i + size));
+    i += size;
+  }
+  let out = "", n = 0;
+  for (const row of rows) {
+    const items = row.map((p) => card(p, ++n));
+    out += `            ${OPEN[row.length]}\n${items.join("\n\n")}\n            </div>\n\n`;
   }
   return out;
 }
 
-/* ───────── página de projeto: conteúdo do painel → formato do template ───────── */
-function toLayoutData(p) {
+/* ───────── página de projeto: blocos do painel (page.sections) → HTML pronto ───────── */
+const fmt = (t = "") => String(t).replace(/\n/g, "<br>");
+const span = (id, v, cls = "") => `<span${cls ? ` class="${cls}"` : ""}${id ? ` id="${id}"` : ""}${v ? "" : ' style="display: none;"'}>${v ? fmt(v) : ""}</span>`;
+
+// projetos antigos (campos fixos) viram a lista de blocos, na ordem do modelo original
+function legacySections(g = {}) {
+  const out = [];
+  if (g.hero?.show) out.push({ type: "hero", ...g.hero });
+  if (g.heading?.title || g.heading?.number) out.push({ type: "title", title: g.heading.title, number: g.heading.number });
+  if (g.video?.youtubeId) out.push({ type: "video", ...g.video });
+  const ds = g.description || {};
+  if (ds.text || ds.column1 || ds.column2Title || ds.column2Text || ds.column3 || ds.column4) out.push({ type: "description", ...ds });
+  if (g.gallery?.length) out.push({ type: "gallery", images: g.gallery });
+  if (g.modelsheet?.images?.length) out.push({ type: "slider", ...g.modelsheet });
+  const c = g.concept || {};
+  if (c.image1 || c.image2 || c.text1) out.push({ type: "concept", ...c });
+  if (g.fullImage1) out.push({ type: "fullImage", image: g.fullImage1 });
+  if (g.process?.length) out.push({ type: "process", steps: g.process });
+  if (g.backgrounds?.images?.length) out.push({ type: "slider", ...g.backgrounds });
+  const an = g.animation2d || {};
+  if (an.image1 || an.image2) out.push({ type: "twoImages", ...an });
+  if (g.fullImage2) out.push({ type: "fullImage", image: g.fullImage2 });
+  if (g.credits?.people?.length) out.push({ type: "credits", ...g.credits });
+  if (g.contact?.show) out.push({ type: "contact", header: g.contact.header });
+  if (g.trailerBanner?.show) out.push({ type: "trailerBanner", ...g.trailerBanner });
+  return out;
+}
+
+function renderSections(p) {
   const g = p.page || {};
-  const d = {};
-  d.pageStyle = {
+  const list = Array.isArray(g.sections) ? g.sections : legacySections(g);
+  let fulls = 0;
+  const B = {
+    title: (s) => `
+        <div class="project-title">
+            <div>
+                ${span("project-title_text", s.title)}
+                ${span("project-title_num", s.number)}
+            </div>
+        </div>`,
+    hero: (s) => `
+        <section class="hero-container">
+            <span class="hero-text" id="hero-text">${fmt(s.text || "")}</span>
+            ${s.logo ? `<img id="hero-img" alt="${esc(stripTags(p.title))}" class="hero-img" src="${esc(s.logo)}">` : ""}
+            <div class="hero-btn">${s.button1Text ? `
+                <a href="${esc(s.button1Link || "#")}" class="hero-btn1" id="hero-btn1">
+                    <span id="hero-btn1-text">${esc(s.button1Text)}</span>
+                </a>` : ""}${s.button2Text ? `
+                <a href="${esc(s.button2Link || "#")}" class="hero-btn2" id="hero-btn2" target="_blank" rel="noopener">
+                    <span id="hero-btn2-text">${esc(s.button2Text)}</span>${s.button2Icon ? `
+                    <img alt="" class="icon-hero-btn" id="hero-btn2-icon" src="${esc(s.button2Icon)}">` : ""}
+                </a>` : ""}
+            </div>
+        </section>`,
+    video: (s) => s.youtubeId ? `
+        <section class="video-wrapper" data-yt="${esc(s.youtubeId)}" data-yt-mobile="${esc(s.youtubeShortsId || "")}">
+            <iframe id="project-video" title="${esc(stripTags(p.title))}" frameborder="0" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </section>` : "",
+    description: (s) => `
+        <section class="project-description">
+            <div class="project-description-header">
+                ${span("project-description-header-text", s.text)}
+                ${span("section-header-description", s.header, "section-header")}
+            </div>
+            <div class="project-info">
+                <div class="project-info-columns">
+                    ${span("project-description_1", s.column1)}
+                    <span id="project-description_2">
+                        ${span("project-description_2_1", s.column2Title)}
+                        ${span("project-description_2_2", s.column2Text)}
+                    </span>
+                    ${span("project-description_3", s.column3)}
+                    ${span("project-description_4", s.column4)}
+                </div>
+            </div>
+        </section>`,
+    gallery: (s) => (s.images || []).length ? `
+        <div class="synopsis-gallery">${s.images.map((src) => `<img src="${esc(src)}" class="gallery-img" alt="${esc(stripTags(p.title))}" loading="lazy">`).join("")}</div>` : "",
+    slider: (s) => (s.images || []).length ? `
+        <section class="project-slider">
+            <div class="project-slider-texts">
+                <span class="project-slider-texts_description">${fmt(s.text || "")}</span>
+                <span class="section-header">${esc(s.title || "")}</span>
+            </div>
+            <div class="project-slider-container">
+                <div class="project-slider-track">${s.images.map((src, i) => `<div class="project-slide" data-slide="${i + 1}"><img src="${esc(src)}" alt="${esc(s.title || stripTags(p.title))}" draggable="false" loading="lazy"></div>`).join("")}</div>
+            </div>
+        </section>` : "",
+    concept: (s) => {
+      const img = (n, cls) => s[`image${n}`] ? `
+                <div class="container-concept-img${cls}" id="concept-img-${n}" style="background-image: url(&quot;${esc(s[`image${n}`])}&quot;);">
+                    <div class="concept-img_text">
+                        <span id="concept-img-${n}-label">${esc(s[`image${n}Label`] || "")}</span>
+                        <span id="concept-img-${n}-credit">${esc(s[`image${n}Credit`] || "")}</span>
+                    </div>
+                </div>` : "";
+      return `
+        <section class="concept">
+            <div class="concept-left">
+                <div class="section-header" id="concept-header">${esc(s.header || "")}</div>
+                <div class="concept-text">
+                    ${span("concept-text-1", s.text1)}
+                    ${span("concept-text-2", s.text2)}
+                </div>${img(1, "")}
+            </div>${img(2, " concept-img-2")}
+        </section>`;
+    },
+    fullImage: (s) => s.image ? `
+        <div class="project-image-fullscream"${fulls++ ? ' id="image-fullscream2"' : ""} style="background-image: url(&quot;${esc(s.image)}&quot;);" role="img" aria-label="${esc(stripTags(p.title))}"></div>` : "",
+    process: (s) => (s.steps || []).length ? `
+        <section class="process" id="process" style="height: ${60 + s.steps.length * 60 + 60}vh;" data-steps="${esc(JSON.stringify(s.steps.map((x) => ({ title: x.title || "", text: x.text || "", image: x.image || "" }))))}">
+            <div class="process-sticky">
+                <div class="process-img">
+                    <img id="process-img" src="${esc(s.steps[0].image || "")}" alt="${esc(s.steps[0].title || "")}">
+                </div>
+                <div class="process-texto">
+                    <b id="process-title"></b>
+                    <span id="process-text"></span>
+                </div>
+            </div>
+        </section>` : "",
+    twoImages: (s) => (s.image1 || s.image2) ? `
+        <section class="project-animation2d">
+            <div class="project-animation2d-texts">
+                <span class="project-animation2d-texts_description">${fmt(s.text || "")}</span>
+                <span class="section-header">${esc(s.header || "")}</span>
+            </div>
+            <div class="project-animation2d-images">${s.image1 ? `
+                <div class="project-animation2d-image" id="project-animation2d-image_1"><img src="${esc(s.image1)}" alt="" loading="lazy"></div>` : ""}${s.image2 ? `
+                <div class="project-animation2d-image" id="project-animation2d-image_2"><img src="${esc(s.image2)}" alt="" loading="lazy"></div>` : ""}
+            </div>
+        </section>` : "",
+    credits: (s) => (s.people || []).length ? `
+        <section class="project-credits">
+            <div class="credits-container reveal02">
+                ${span("credits-header", s.header, "section-header")}
+                <div id="participants-name">${s.people.map((x) => `<div class="credit-item"><span class="credit-name">${esc(x.name || "")}</span>${x.role ? `<span class="credit-role">${esc(x.role)}</span>` : ""}</div>`).join("")}</div>
+            </div>
+        </section>` : "",
+    contact: (s) => `
+        <section class="contact reveal03">
+            <a href="/contact" id="contact-text">
+                <span>Let's</span><br>
+                <span>Talk</span>
+            </a>
+            <span class="section-header" id="contact-header">${esc(s.header || "/ GET IN TOUCH")}</span>
+        </section>`,
+    trailerBanner: (s) => `
+        <section class="banner-container" id="tob-banner">
+            <a href="${esc(s.link || "#")}" class="banner" target="_blank" rel="noopener noreferrer">
+                <span id="banner-title">${fmt(s.title || "")}</span>
+                <span class="banner-btn">
+                    <span>WATCH NOW</span>
+                    <img src="/assets/images/images-tob/vector.svg" alt="" class="icon-banner-btn">
+                </span>
+            </a>
+        </section>
+        <section class="tob-text-container" id="tob-text">
+            <div class="tob-text">
+                <span id="tob-text-1">${fmt(s.text1 || "")}</span>
+                <span id="tob-text-2">${fmt(s.text2 || "")}</span>
+                <span id="tob-text-3"><b>${fmt(s.text3 || "")}</b></span>
+                <img src="/assets/icons/logo-raphy-white.svg" alt="Raphy Studios">
+            </div>
+        </section>`,
+  };
+  return list.map((s) => (B[s.type] ? B[s.type](s) : "")).join("\n");
+}
+
+function pageStyle(p) {
+  const g = p.page || {};
+  return {
     background: g.theme === "white" ? "white" : "black",
     logo: `/assets/icons/logo-raphy-${g.logo === "black" ? "black" : "white"}.svg`,
     menuIcon: `/assets/icons/${g.menuIcon === "dark" ? "menu-close" : "menu"}.svg`,
+    ...(g.overflowVisible ? { overflowX: "visible" } : {}),
   };
-  if (g.overflowVisible) d.pageStyle.overflowX = "visible";
-  if (g.heading?.title) d.title = g.heading.title;
-  if (g.heading?.number) d.number = g.heading.number;
-  if (g.hero?.show) {
-    d.hero = { text: g.hero.text, logo: g.hero.logo };
-    if (g.hero.button1Text) d.hero.button1 = { text: g.hero.button1Text, href: g.hero.button1Link || "#" };
-    if (g.hero.button2Text) d.hero.button2 = { text: g.hero.button2Text, href: g.hero.button2Link || "#", icon: g.hero.button2Icon };
-  }
-  if (g.video?.youtubeId) d.video = { youtubeId: g.video.youtubeId, youtubeShortsId: g.video.youtubeShortsId };
-  const ds = g.description || {};
-  if (ds.text) d.description = ds.text;
-  if (ds.header) d["description-header"] = ds.header;
-  if (ds.column1 || ds.column2Title || ds.column2Text || ds.column3 || ds.column4)
-    d.info = { description_1: ds.column1, description_2_1: ds.column2Title, description_2_2: ds.column2Text, description_3: ds.column3, description_4: ds.column4 };
-  if (g.gallery?.length) d.gallery = g.gallery;
-  const slider = (s) => (s?.images?.length ? [{ "slide-description": s.text || "" }, { "slide-title": s.title || "" }, { "slide-imgs": s.images }] : undefined);
-  d["slide-modelsheet"] = slider(g.modelsheet);
-  d["slide-backgrounds"] = slider(g.backgrounds);
-  if (g.process?.length) d.process = { steps: g.process };
-  const c = g.concept || {};
-  if (c.image1 || c.image2 || c.text1)
-    d.concept = {
-      header: c.header, text1: c.text1, text2: c.text2,
-      image1: c.image1 ? { src: c.image1, label: c.image1Label, credit: c.image1Credit } : undefined,
-      image2: c.image2 ? { src: c.image2, label: c.image2Label, credit: c.image2Credit } : undefined,
-    };
-  if (g.fullImage1) d["image-full1"] = g.fullImage1;
-  if (g.fullImage2) d["image-full2"] = g.fullImage2;
-  const a = g.animation2d || {};
-  if (a.image1 || a.image2) Object.assign(d, { "animation2d-description": a.text, "animation2d-header": a.header, "animation2d-img1": a.image1, "animation2d-img2": a.image2 });
-  if (g.credits?.people?.length) {
-    d["credits-header"] = g.credits.header;
-    d.credits = g.credits.people.map((x) => ({ name: x.name, role: x.role }));
-  }
-  if (g.contact?.show) d.contact = { header: g.contact.header || "GET IN TOUCH" };
-  const t = g.trailerBanner || {};
-  if (t.show) d.tob = { title: t.title, link: t.link, text1: t.text1, text2: t.text2, text3: t.text3 };
-  d.name = stripTags(p.title);
-  return JSON.parse(JSON.stringify(d)); // remove campos vazios (undefined)
 }
 
 /* ───────── gerar ───────── */
@@ -241,7 +413,7 @@ write("contact/index.html", render("contact", { title: "Contact - Raphy Studios"
 
 const legacy = {};
 for (const p of projects.filter(hasPage)) {
-  const data = JSON.stringify(toLayoutData(p)).replace(/</g, "\\u003c");
+  const data = JSON.stringify({ pageStyle: pageStyle(p), name: stripTags(p.title) }).replace(/</g, "\\u003c");
   const name = stripTags(p.title);
   write(
     `projects/${p.slug}/index.html`,
@@ -250,7 +422,7 @@ for (const p of projects.filter(hasPage)) {
       description: p.seoDescription || stripTags(p.page?.description?.text || "") || SITE.description,
       image: p.grid?.cover || SITE.image,
       path: `/projects/${p.slug}`,
-    }, { projectData: data })
+    }, { projectData: data, sections: renderSections(p) })
   );
   if (p.legacyId) legacy[p.legacyId] = p.slug;
 }

@@ -4,11 +4,17 @@
       var nav = root.querySelector('.pf'), grid = root.querySelector('section.projects');
       if (!nav || !grid) return;
       var items = Array.prototype.slice.call(grid.querySelectorAll('.project'));
+      // linhas como vieram do painel, para voltar a elas no "All"
+      var rows = Array.prototype.slice.call(grid.children).map(function (d) { return { cls: d.className, list: Array.prototype.slice.call(d.querySelectorAll('.project')) }; });
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
       var pick = function (f) { return items.filter(function (x) { return f === 'all' || x.getAttribute('data-category') === f; }); };
       nav.querySelectorAll('.pf-i').forEach(function (b) { var c = b.querySelector('.pf-n'); if (c) c.textContent = pad(pick(b.getAttribute('data-filter')).length); });
-      var build = function (list) {
+      var build = function (list, f) {
         grid.innerHTML = '';
+        if (f === 'all') {
+          rows.forEach(function (r) { var d = document.createElement('div'); d.className = r.cls; r.list.forEach(function (x) { d.appendChild(x); }); grid.appendChild(d); });
+          return;
+        }
         var i = 0, k = 0, P = [2, 1, 3];
         while (i < list.length) {
           var n = Math.min(P[k % 3], list.length - i), d = document.createElement('div');
@@ -31,7 +37,7 @@
           T(function () {
             var list = pick(f);
             items.forEach(function (x) { x.style.transition = 'none'; x.style.transitionDelay = '0ms'; x.classList.remove('pf-leave'); x.classList.add('pf-enter'); });
-            build(list);
+            build(list, f);
             grid.style.height = 'auto'; var h1 = grid.offsetHeight;
             grid.style.height = h0 + 'px'; void grid.offsetHeight; grid.style.height = h1 + 'px';
             // entrada: os novos cards sobem de baixo, em sequência

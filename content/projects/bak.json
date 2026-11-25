@@ -1,23 +1,19 @@
 {
   "slug": "bak",
   "title": "BAK - Opening Intro",
+  "published": true,
   "category": "originals",
   "order": 5,
-  "link": "external",
-  "externalUrl": "https://www.behance.net/gallery/224316315/BAK-Opening-intro",
   "grid": {
     "cover": "/assets/images/images-projects/capa-bak.webp",
     "video": "/assets/video/videos-projects/video-bak.mp4",
     "coverPosition": "40%"
   },
-  "home": {
-    "show": false,
-    "order": 0,
-    "title": "",
-    "lead": "",
-    "paragraphs": [],
-    "cover": "",
-    "coverPosition": "center"
-  },
-  "seoDescription": ""
+  "homeHighlight": [],
+  "destination": [
+    {
+      "type": "external",
+      "url": "https://www.behance.net/gallery/224316315/BAK-Opening-intro"
+    }
+  ]
 }
