@@ -649,3 +649,30 @@
     transform: rotate(2deg);
     transition: all 1s cubic-bezier(.06, .34, .11, .95);
 }
+/* clientes: altura pelo conteúdo, com espaço fixo antes do "Let's talk" (que sobe 300px por cima) */
+.clients-container {
+    height: auto;
+    min-height: 0;
+    padding-bottom: calc(392px + 0.96vw);
+}
+
+#clients-name {
+    text-align: left;
+}
+
+@media (min-width:768px) {
+    .clients-container {
+        height: auto;
+        padding-bottom: calc(392px + 0.96vw);
+    }
+
+    #clients-name {
+        max-width: 90%;
+    }
+}
+
+@media (min-width:1440px) {
+    .clients-container {
+        height: auto;
+    }
+}

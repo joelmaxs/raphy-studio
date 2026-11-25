@@ -1272,3 +1272,25 @@
         font-size: 21px;
     }
 }
+
+/* créditos: altura pelo conteúdo, com espaço fixo antes do "Let's talk" (que sobe 100px por cima) */
+.credits-container,
+.credits-container:hover {
+    min-height: 0 !important;
+}
+
+.credits-container {
+    padding-bottom: calc(190px + 5.24vw);
+}
+
+@media (min-width:768px) {
+    .credits-container {
+        padding-bottom: calc(390px + 5.24vw);
+    }
+}
+
+@media (min-width:1024px) {
+    .credits-container {
+        padding-bottom: calc(40vh + 90px + 5.24vw);
+    }
+}

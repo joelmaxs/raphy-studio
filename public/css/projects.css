@@ -367,3 +367,31 @@
 @media (min-width:768px){.projects-container-texts.pf{font-size:10.5vw}}
 @media (min-width:1024px){.projects-container-texts.pf{font-size:96px}}
 @media (min-width:1366px){.projects-container-texts.pf{font-size:9vw}}
+
+/* clientes: altura pelo conteúdo, com espaço fixo antes do "Let's talk" (que sobe 300px por cima) */
+.clients-container {
+    height: auto;
+    min-height: 0;
+    padding-bottom: calc(392px + 0.96vw);
+}
+
+#clients-name {
+    text-align: left;
+}
+
+@media (min-width:768px) {
+    .clients-container {
+        height: auto;
+        padding-bottom: calc(392px + 0.96vw);
+    }
+
+    #clients-name {
+        max-width: 90%;
+    }
+}
+
+@media (min-width:1440px) {
+    .clients-container {
+        height: auto;
+    }
+}
