@@ -351,3 +351,17 @@
     transform: rotate(2deg);
     transition: all 1s cubic-bezier(.06, .34, .11, .95);
 }
+/* filtro de projetos (All / Originals / Commercial) */
+.projects-container{justify-content:flex-start}
+.projects-container-texts.pf{align-items:flex-start;line-height:82%;font-size:11vw}
+.pf-i{all:unset;display:block;cursor:pointer;white-space:nowrap;color:var(--black);transition:color .35s cubic-bezier(.77,.02,0,.97)}
+.pf-i:nth-child(2){margin-left:.6em}
+.pf-i:nth-child(3){margin-left:1.3em}
+.pf-i:hover,.pf-i.is-on{color:var(--gray4)}
+.pf-i:focus-visible{outline:2px solid var(--gray2);outline-offset:4px}
+.pf-n{font-size:.3em;line-height:1;margin-left:.15em;letter-spacing:0}
+.projects{transition:opacity .35s ease}
+.projects.pf-out{opacity:0}
+@media (min-width:768px){.projects-container-texts.pf{font-size:10.5vw}}
+@media (min-width:1024px){.projects-container-texts.pf{font-size:96px}}
+@media (min-width:1366px){.projects-container-texts.pf{font-size:9vw}}

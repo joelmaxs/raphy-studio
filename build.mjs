@@ -68,7 +68,7 @@ const CSS = {
 const JS = {
   index: ["components/loadComponents.js", "animations/loader.js", "animations/reveal.js", "main.js"],
   about: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
-  projects: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
+  projects: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "projects-filter.js|defer"],
   contact: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
   project: ["https://www.youtube.com/iframe_api", "animations/loader.js", "components/project-layout.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
 };
@@ -236,7 +236,7 @@ cpSync(join(ROOT, "public"), DIST, { recursive: true });
 
 write("index.html", render("index", { title: "Raphy Studios - Home", description: SITE.description, image: SITE.image, path: "/" }, { homeProjects: homeProjects() }));
 write("about/index.html", render("about", { title: "About - Raphy Studios", description: SITE.description, image: SITE.image, path: "/about" }));
-write("projects/index.html", render("projects", { title: "Raphy Studios - Projects", description: "Selected animation projects by Raphy Studios: cinematics, short films, game trailers and more.", image: SITE.image, path: "/projects" }, { gridProjects: gridProjects(), projectCount: pad(projects.length) }));
+write("projects/index.html", render("projects", { title: "Raphy Studios - Projects", description: "Selected animation projects by Raphy Studios: cinematics, short films, game trailers and more.", image: SITE.image, path: "/projects" }, { gridProjects: gridProjects(), projectCount: pad(projects.length), originalsCount: pad(projects.filter((p) => p.category === "originals").length), commercialCount: pad(projects.filter((p) => (p.category || "commercial") !== "originals").length) }));
 write("contact/index.html", render("contact", { title: "Contact - Raphy Studios", description: "Get in touch with Raphy Studios — general enquiries, commercial proposals and joining the team.", image: SITE.image, path: "/contact" }));
 
 const legacy = {};

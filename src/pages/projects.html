@@ -11,12 +11,10 @@
 
     <main>
         <section class="projects-container">
-            <div class="projects-container-texts">
-                <span>
-                    All
-                    <span id="projects-container-number">{{projectCount}}</span>
-                </span>
-                <span>Projects</span>
+            <div class="projects-container-texts pf" role="group" aria-label="Filter projects">
+                <button type="button" class="pf-i is-on" data-filter="all" aria-pressed="true">All<span class="pf-n">{{projectCount}}</span></button>
+                <button type="button" class="pf-i" data-filter="originals" aria-pressed="false">Originals<span class="pf-n">{{originalsCount}}</span></button>
+                <button type="button" class="pf-i" data-filter="commercial" aria-pressed="false">Commercial<span class="pf-n">{{commercialCount}}</span></button>
             </div>
         </section>
 
