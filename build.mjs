@@ -4,11 +4,12 @@
  * Lê:   src/pages/*.html, src/partials/*.html, content/projects/*.json, public/**
  * Gera: dist/  (site pronto para publicar)
  *
- * Uso:  node build.mjs          (não precisa instalar nada)
+ * Uso:  npm install  (uma vez)  →  node build.mjs
+ *       Sem o "sharp" instalado o site é gerado igual, só sem as versões menores das imagens.
  * Na Cloudflare Pages: Build command = "node build.mjs" · Output directory = "dist"
  */
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, cpSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, cpSync, existsSync, statSync } from "node:fs";
+import { join, dirname, relative, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 /* ───────── configuração do site ───────── */
@@ -26,7 +27,7 @@ const read = (p) => readFileSync(join(ROOT, p), "utf8");
 const write = (p, s) => {
   const full = join(DIST, p);
   mkdirSync(dirname(full), { recursive: true });
-  writeFileSync(full, s);
+  writeFileSync(full, p.endsWith(".html") ? optimizeHtml(s) : s);
 };
 
 /* ───────── utilidades ───────── */
@@ -84,11 +85,11 @@ const CSS = {
   project: ["global", "header", "footer", "project-layout"],
 };
 const JS = {
-  index: ["components/loadComponents.js", "animations/loader.js", "animations/reveal.js", "main.js"],
-  about: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
-  projects: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "projects-filter.js|defer"],
-  contact: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
-  project: ["https://www.youtube.com/iframe_api", "animations/loader.js", "components/project-layout.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer"],
+  index: ["components/loadComponents.js", "animations/loader.js", "animations/reveal.js", "main.js", "media.js|defer"],
+  about: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "media.js|defer"],
+  projects: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "projects-filter.js|defer", "media.js|defer"],
+  contact: ["animations/loader.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "media.js|defer"],
+  project: ["https://www.youtube.com/iframe_api", "animations/loader.js", "components/project-layout.js", "components/loadComponents.js", "animations/reveal.js", "main.js|defer", "media.js|defer"],
 };
 
 function head(kind, { title, description, image, path }) {
@@ -106,6 +107,8 @@ function head(kind, { title, description, image, path }) {
     <meta property="og:url" content="${abs(path)}">
     <meta name="twitter:card" content="summary_large_image">
 
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro">
 ${css}
     <link rel="icon" type="image/x-icon" href="/assets/icons/icon.ico">`;
 }
@@ -173,13 +176,13 @@ function gridProjects() {
     const ext = !hasPage(p);
     const video = g.video
       ? `
-                    <video autoplay muted loop playsinline>
+                    <video autoplay muted loop playsinline data-cover="${esc(g.cover || "")}">
                         <source src="${esc(g.video)}" type="video/mp4">
                     </video>
 `
       : "";
     return `                <a href="${esc(projectHref(p))}" class="project"${ext ? ' target="_blank"' : ""} data-category="${esc(p.category || "commercial")}">${video}
-                    <img src="${esc(g.cover || "")}" alt="${esc(stripTags(p.title))}" style="object-position: ${esc(g.coverPosition || "center")};">
+                    <img src="${esc(g.cover || "")}" sizes="(min-width: 768px) 50vw, 100vw" alt="${esc(stripTags(p.title))}" style="object-position: ${esc(g.coverPosition || "center")};">
 
                     <div class="project-info">
                         <span>${p.title}</span>
@@ -300,7 +303,7 @@ function renderSections(p) {
             </div>
         </section>`,
     gallery: (s) => (s.images || []).length ? `
-        <div class="synopsis-gallery">${s.images.map((src) => `<img src="${esc(src)}" class="gallery-img" alt="${esc(stripTags(p.title))}" loading="lazy">`).join("")}</div>` : "",
+        <div class="synopsis-gallery">${s.images.map((src) => `<img src="${esc(src)}" class="gallery-img" sizes="(min-width: 768px) 50vw, 100vw" alt="${esc(stripTags(p.title))}" loading="lazy">`).join("")}</div>` : "",
     slider: (s) => (s.images || []).length ? `
         <section class="project-slider">
             <div class="project-slider-texts">
@@ -308,7 +311,7 @@ function renderSections(p) {
                 <span class="section-header">${esc(s.title || "")}</span>
             </div>
             <div class="project-slider-container">
-                <div class="project-slider-track">${s.images.map((src, i) => `<div class="project-slide" data-slide="${i + 1}"><img src="${esc(src)}" alt="${esc(s.title || stripTags(p.title))}" draggable="false" loading="lazy"></div>`).join("")}</div>
+                <div class="project-slider-track">${s.images.map((src, i) => `<div class="project-slide" data-slide="${i + 1}"><img src="${esc(src)}" sizes="85vw" alt="${esc(s.title || stripTags(p.title))}" draggable="false" loading="lazy"></div>`).join("")}</div>
             </div>
         </section>` : "",
     concept: (s) => {
@@ -351,8 +354,8 @@ function renderSections(p) {
                 <span class="section-header">${esc(s.header || "")}</span>
             </div>
             <div class="project-animation2d-images">${s.image1 ? `
-                <div class="project-animation2d-image" id="project-animation2d-image_1"><img src="${esc(s.image1)}" alt="" loading="lazy"></div>` : ""}${s.image2 ? `
-                <div class="project-animation2d-image" id="project-animation2d-image_2"><img src="${esc(s.image2)}" alt="" loading="lazy"></div>` : ""}
+                <div class="project-animation2d-image" id="project-animation2d-image_1"><img src="${esc(s.image1)}" sizes="(min-width: 768px) 50vw, 100vw" alt="" loading="lazy"></div>` : ""}${s.image2 ? `
+                <div class="project-animation2d-image" id="project-animation2d-image_2"><img src="${esc(s.image2)}" sizes="(min-width: 768px) 50vw, 100vw" alt="" loading="lazy"></div>` : ""}
             </div>
         </section>` : "",
     credits: (s) => (s.people || []).length ? `
@@ -402,9 +405,124 @@ function pageStyle(p) {
   };
 }
 
+
+/* ───────── otimização de imagens e vídeos ─────────
+ * Imagens: o build cria versões menores (640/1280/1920 px, WebP) em dist/_img/ e coloca
+ *          srcset nas <img>, para o celular e telas comuns não baixarem a imagem gigante.
+ *          Também vale para imagens novas enviadas pelo painel (inclusive JPG/PNG).
+ * Vídeos:  só carregam quando chegam perto da tela (js/media.js). Se existir "nome-m.mp4"
+ *          ao lado do vídeo, o celular usa essa versão menor; "nome-poster.webp" vira a capa.
+ */
+let sharp = null;
+try { sharp = (await import("sharp")).default; } catch { console.warn("! sharp não instalado — imagens sem versões menores (rode npm install)"); }
+const IMG = new Map(); // "/assets/…/x.webp" → { w, set: [[url, largura], …] }
+const WIDTHS = [640, 1280, 1920];
+const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(d, e.name)) : [join(d, e.name)]));
+
+async function optimizeImages() {
+  if (!sharp) return;
+  const files = walk(join(DIST, "assets")).filter((f) => /\.(webp|jpe?g|png)$/i.test(f) && !/[\\/](icons|font[^\\/]*)[\\/]/.test(f));
+  const one = async (f) => {
+    const rel = relative(DIST, f).split("\\").join("/");
+    const url = "/" + rel;
+    const base = rel.slice(0, -extname(rel).length);
+    const isWebp = /\.webp$/i.test(f);
+    let w;
+    try { w = (await sharp(f).metadata()).width; } catch { return; }
+    const set = [];
+    for (const W of WIDTHS) {
+      if (W >= w * 0.9) break;
+      const out = `_img/${base}-${W}.webp`;
+      mkdirSync(dirname(join(DIST, out)), { recursive: true });
+      await sharp(f).resize({ width: W }).webp({ quality: 78, effort: 5 }).toFile(join(DIST, out));
+      set.push(["/" + out, W]);
+    }
+    if (isWebp) set.push([url, w]);
+    else {
+      const out = `_img/${base}.webp`;
+      mkdirSync(dirname(join(DIST, out)), { recursive: true });
+      await sharp(f).webp({ quality: 82, effort: 5 }).toFile(join(DIST, out));
+      set.push(["/" + out, w]);
+    }
+    if (set.length > 1 || !isWebp) IMG.set(url, { w, set });
+  };
+  const queue = [...files];
+  await Promise.all(Array.from({ length: 6 }, async () => { while (queue.length) await one(queue.shift()); }));
+}
+
+const imgInfo = (src) => IMG.get(decodeURI(String(src).replace(/&amp;/g, "&").split("?")[0]));
+const srcsetOf = (info) => info.set.map(([u, w]) => `${encodeURI(u)} ${w}w`).join(", ");
+// fundos (CSS): telas comuns usam a versão de 1920px, telas retina a original
+function bgImageSet(cssUrl) {
+  const info = imgInfo(cssUrl);
+  const v = info && info.set.find(([, w]) => w === 1920);
+  return v ? `image-set(url("${encodeURI(v[0])}") 1x, url("${cssUrl}") 2x)` : null;
+}
+
+function optimizeHtml(html) {
+  const mainAt = html.indexOf("<main");
+  let imgCount = 0;
+  html = html.replace(/<img\b[^>]*>/g, (tag, at) => {
+    const src = (tag.match(/\ssrc="([^"]+)"/) || [])[1];
+    const inMain = mainAt >= 0 && at > mainAt;
+    if (inMain) imgCount++;
+    let t = tag;
+    const info = src && imgInfo(src);
+    if (info) {
+      t = t.replace(/\ssrc="/, ` srcset="${srcsetOf(info)}" src="`);
+      if (!/\ssizes=/.test(t)) t = t.replace("<img", '<img sizes="100vw"');
+    }
+    if (src && !/\sdecoding=/.test(t)) t = t.replace("<img", '<img decoding="async"');
+    // as 3 primeiras imagens do conteúdo carregam logo; o resto só perto da tela
+    if (src && inMain && imgCount > 3 && !/\sloading=|data-eager/.test(t)) t = t.replace("<img", '<img loading="lazy"');
+    return t;
+  });
+  html = html.replace(/<video\b([^>]*)>([\s\S]*?)<\/video>/g, (all, attrs, inner) => {
+    const eager = /data-eager/.test(attrs);
+    const src = (inner.match(/<source[^>]*\ssrc="([^"]+)"/) || [])[1];
+    if (!src || !src.startsWith("/")) return all;
+    const pub = (u) => existsSync(join(ROOT, "public", decodeURI(u)));
+    const mob = src.replace(/\.mp4$/, "-m.mp4");
+    const poster = src.replace(/\.mp4$/, "-poster.webp");
+    const a = eager ? "src" : "data-src";
+    const sources = pub(mob)
+      ? `<source ${a}="${src}" type="video/mp4" media="(min-width: 768px)"><source ${a}="${mob}" type="video/mp4">`
+      : `<source ${a}="${src}" type="video/mp4">`;
+    let at = attrs.replace(/\s(autoplay|preload="[^"]*"|preload)(?=[\s>]|$)/g, "");
+    const cover = (at.match(/\sdata-cover="([^"]*)"/) || [])[1];
+    const coverInfo = cover && imgInfo(cover);
+    const coverSmall = coverInfo && (coverInfo.set.find(([, w]) => w === 1280) || coverInfo.set[coverInfo.set.length - 1]);
+    at = at.replace(/\sdata-cover="[^"]*"/, "");
+    if (pub(poster) && !/\sposter=/.test(at)) at += ` ${eager ? "poster" : "data-poster"}="${poster}"`;
+    else if (coverSmall) at += ` data-poster="${encodeURI(coverSmall[0])}"`;
+    else if (cover) at += ` data-poster="${cover}"`;
+    at += eager ? ' autoplay preload="auto"' : ' preload="none" data-lazy-video';
+    return `<video${at}>${sources}</video>`;
+  });
+  // fundos em style="" (blocos do painel)
+  html = html.replace(/background-image: url\(&quot;([^&]+)&quot;\);/g, (m, u) => {
+    const set = bgImageSet(u);
+    return set ? `${m} background-image: ${set.replace(/"/g, "&quot;")};` : m;
+  });
+  return html;
+}
+
+function optimizeCss() {
+  for (const f of walk(join(DIST, "css")).filter((f) => f.endsWith(".css"))) {
+    const css = readFileSync(f, "utf8");
+    const out = css.replace(/background-image:\s*url\(["']?\.\.(\/assets\/[^"')]+)["']?\);/g, (m, u) => {
+      const set = bgImageSet(u);
+      return set ? `${m}\n    background-image: ${set};` : m;
+    });
+    if (out !== css) writeFileSync(f, out);
+  }
+}
+
 /* ───────── gerar ───────── */
 rmSync(DIST, { recursive: true, force: true });
 cpSync(join(ROOT, "public"), DIST, { recursive: true });
+await optimizeImages();
+optimizeCss();
 
 write("index.html", render("index", { title: "Raphy Studios - Home", description: SITE.description, image: SITE.image, path: "/" }, { homeProjects: homeProjects() }));
 write("about/index.html", render("about", { title: "About - Raphy Studios", description: SITE.description, image: SITE.image, path: "/about" }));

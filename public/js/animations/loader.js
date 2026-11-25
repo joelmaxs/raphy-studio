@@ -22,6 +22,13 @@ function initLoader() {
             return false;
         }
 
+        // só espera o que aparece na primeira tela; o resto carrega depois, sob demanda
+        const rect = img.getBoundingClientRect();
+
+        if (!rect.width || !rect.height || rect.top > window.innerHeight) {
+            return false;
+        }
+
         return true;
     });
 

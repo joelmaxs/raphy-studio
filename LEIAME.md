@@ -8,7 +8,7 @@ src/partials/       ← header, footer e loader (usados em todas as páginas)
 public/css/         ← estilos (um arquivo por página + global/header/footer)
 public/js/          ← scripts
 public/assets/      ← imagens (WebP), vídeos, ícones, fontes · uploads/ recebe o que for enviado pelo painel
-build.mjs           ← gera o site final em dist/ (não precisa instalar nada)
+build.mjs           ← gera o site final em dist/ (a Cloudflare instala o "sharp" sozinha pelo package.json; ele cria versões menores das imagens)
 .pages.yml          ← configuração do painel (Pages CMS)
 ```
 
@@ -46,3 +46,8 @@ build.mjs           ← gera o site final em dist/ (não precisa instalar nada)
 node build.mjs
 npx serve dist      (ou qualquer servidor estático apontando para dist/)
 ```
+
+## Desempenho (automático)
+- Imagens: o build cria versões menores (640/1280/1920 px) e o navegador baixa a do tamanho da tela. Vale também para imagens novas do painel, inclusive JPG/PNG.
+- Vídeos: só carregam quando chegam perto da tela e pausam quando saem. Se existir `nome-m.mp4` ao lado do vídeo, o celular usa essa versão menor; `nome-poster.webp` aparece enquanto o vídeo carrega.
+- Vídeos novos: de preferência mp4 H.264, até 1920 px de largura, sem áudio, poucos segundos.
